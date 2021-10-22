@@ -4,6 +4,7 @@ from.views import index
 urlpatterns = [
     path('',index),
     path('join',index),
-    path('lei',index)
+    path('lei',index),
+    path('homequestao',index)
 
 ]

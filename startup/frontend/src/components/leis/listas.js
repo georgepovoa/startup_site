@@ -198,5 +198,3 @@ exports.Capitulo = [
         "texto": "CAPÍTULO VIII DOS ÍNDIOS"
     }
 ]
-
-questoes_feitas = id_usuario.id==a dele

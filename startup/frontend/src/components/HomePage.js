@@ -4,6 +4,7 @@ import CreateRoomPage from "./CreateRoomPage";
 import Lei from "./leis/lei";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import HomeQuestao from "./questoes/homeQuestao";
 
 
 export default class HomePage extends Component {
@@ -33,6 +34,7 @@ export default class HomePage extends Component {
                     <Route path="/join" component={RoomJoinPage} />
                     <Route path="/create" component={CreateRoomPage}></Route>
                     <Route path="/lei" component={Lei}></Route>
+                    <Route path="/homeQuestao" component={HomeQuestao}></Route>
 
                 </Switch>
             </Router>
