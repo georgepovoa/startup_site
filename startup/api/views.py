@@ -111,3 +111,12 @@ class CurrentUserViewSet(viewsets.ModelViewSet):
     
     
 ################################# USERS #########################
+
+
+
+################################# QUESTAO #######################
+def get_name(request):
+    if request.method == 'POST':
+        print(request)
+
+################################# QUESTAO #######################
