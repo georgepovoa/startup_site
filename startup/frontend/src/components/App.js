@@ -37,7 +37,7 @@ export default class App extends Component {
             <div className = "appdiv" >
                 <UserNav first_name = {this.state.current_user.first_name} email = {this.state.current_user.email}/>
                 
-                <Navbar/>
+                {/*<Navbar/>*/}
                 <br/>
                 
                 

@@ -3,6 +3,7 @@ import Capitulos from './capitulos';
 import ReactDOM from 'react-dom';
 import Titulo from './titulo';
 import axios from 'axios';
+import {Titulo_lista} from "./listas"
 
 class Lei extends React.Component {
     constructor(props) {
@@ -10,16 +11,16 @@ class Lei extends React.Component {
         super(props);
         
         this.state = {
-            titulos : [], 
+            titulos : Titulo_lista, 
         }
     }
       
     
 
     async componentDidMount(){
-        const response = await axios.get('/api/titulos')
+        //const response = await axios.get('/api/titulos')
 
-        this.setState({titulos:response.data})
+        //this.setState({titulos:response.data})
     }
 
     render() {

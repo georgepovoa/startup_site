@@ -4,7 +4,7 @@ from django.conf.urls import url, include
 from rest_framework import routers
 
 from api.models import User
-from .views import TituloView, CapituloView, SecaoView, SubsecView, ArtigoView, Nivel2View, Nivel3View, Nivel4View,UserViewSet,CurrentUserViewSet
+from .views import TituloView, CapituloView, SecaoView, SubsecView, ArtigoView, Nivel2View, Nivel3View, Nivel4View,UserViewSet,CurrentUserViewSet,QuestaoView
 
 
 router = routers.DefaultRouter()
@@ -21,6 +21,7 @@ urlpatterns = [
     path('nivel2', Nivel2View.as_view()),
     path('nivel3', Nivel3View.as_view()),
     path('nivel4', Nivel4View.as_view()),
+    path("questao", QuestaoView.as_view() , name="questao"),
     url(r'^', include(router.urls)),
     
 ]

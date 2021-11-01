@@ -3,6 +3,8 @@ import React from 'react';
 import Artigo from './artigos';
 import axios from 'axios';
 
+import {Artigos_lista} from './listas'
+
 class SubSec extends React.Component {
   constructor(props) {
 
@@ -11,16 +13,16 @@ class SubSec extends React.Component {
     this.state = {
       //subSec : [],
       isOpen: false,
-      artigos: [],
+      artigos: Artigos_lista,
     }
   }
   async componentDidMount() {
     //    const response = await api.get('subsec')
 
     //    this.setState({subSec:response.data})
-    const resposta = await axios.get('/api/artigo')
+    // const resposta = await axios.get('/api/artigo')
 
-    this.setState({ artigos: resposta.data })
+    // this.setState({ artigos: resposta.data })
 
   }
 
@@ -34,8 +36,8 @@ class SubSec extends React.Component {
         <h6 onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto} - ID {this.props.id_subsec}</h6>
 
         {lista_de_artigos.map(itens => {
-          if (this.props.id_subsec.trim() === String(parseInt(itens.subsec.trim()))) {
-            return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id_artigo} />
+          if (this.props.id_subsec === String(parseInt(itens.subsec))) {
+            return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} />
           }
 
         })}

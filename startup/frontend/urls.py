@@ -5,6 +5,5 @@ urlpatterns = [
     path('',index),
     path('join',index),
     path('lei',index),
-    path('homequestao',questao)
-
+    path('homequestao',questao,name = "questao")
 ]

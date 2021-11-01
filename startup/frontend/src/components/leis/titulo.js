@@ -2,6 +2,10 @@ import React from 'react';
 import Capitulos from './capitulos';
 import ReactDOM from 'react-dom';
 import Artigo from './artigos';
+import {Capitulo_lista, Artigos_lista} from "./listas"
+
+
+
 
 import axios from 'axios';
 
@@ -11,8 +15,8 @@ class Titulo extends React.Component {
         super(props);
 
         this.state = {
-            capitulos: [],
-            artigos: [],
+            capitulos: Capitulo_lista,
+            artigos: Artigos_lista,
             isOpen: false,
         }
     }
@@ -24,9 +28,9 @@ class Titulo extends React.Component {
 
         
 
-        const resposta = await axios.get('/api/artigo')
+        // const resposta = await axios.get('/api/artigo')
 
-        this.setState({ artigos: resposta.data })
+        // this.setState({ artigos: resposta.data })
 
     }
 
@@ -34,8 +38,6 @@ class Titulo extends React.Component {
         const { capitulos, isOpen, artigos } = this.state;
         const lista_de_capitulos = Object.values(capitulos)
         const lista_de_artigos = Object.values(artigos)
-
-
 
         return (<div>
             <h1 onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto}</h1>
@@ -49,8 +51,9 @@ class Titulo extends React.Component {
             })}
 
             {lista_de_artigos.map(itens => {
-                if (itens.capitulo == "nan" && itens.id == this.props.id_titulo) {
-                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id_artigo} ></Artigo >
+                if (itens.capitulo == "" && itens.titulo == this.props.id_titulo) {
+                    console.log(itens.capitulo)
+                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} ></Artigo >
                 }
             })}
 

@@ -2,8 +2,8 @@ from inspect import isgenerator
 from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.fields import HiddenField
-from .serializers import TituloSerializer, CapitulosSerializer, SecaoSerializer, SubsecaoSerializer, ArtigoSerializer, Nivel2Serializer, Nivel3Serializer, Nivel4Serializer, UserSerializer
-from .models import ApiTitulos, Capitulos, Secao, Subsecao, Artigo, Nivel2, Nivel3, Nivel4, User
+from .serializers import TituloSerializer, CapitulosSerializer, SecaoSerializer, SubsecaoSerializer, ArtigoSerializer, Nivel2Serializer, Nivel3Serializer, Nivel4Serializer, UserSerializer, questaoSerializer
+from .models import ApiTitulos, Capitulos, Secao, Subsecao, Artigo, Nivel2, Nivel3, Nivel4, User, q_c_q
 from rest_framework.response import Response
 from rest_framework import viewsets
 # Create your views here.
@@ -79,6 +79,15 @@ class Nivel4View(generics.CreateAPIView):
         return Response(serializer_class.data)
     queryset = Nivel4.objects.all()
     serializer_class = Nivel4Serializer
+
+
+class QuestaoView(generics.CreateAPIView):
+    def get(self, request):
+        queryset = q_c_q.objects.all()
+        serializer_class = questaoSerializer(queryset, many=True)
+        return Response(serializer_class.data)
+    queryset = q_c_q.objects.all()
+    serializer_class = questaoSerializer
 
 
 

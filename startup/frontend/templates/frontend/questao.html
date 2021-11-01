@@ -18,7 +18,62 @@
     </head>
     <body>
         
-        <h1>TESTANDO TEMPLATE QUESTAO.html</h1>
+        
+        <h5>{{current}}</h5>
+        <div class="homeQuestao">
+
+                <div class="info-bar">
+                    <p>ID :{{id}}</p>
+                    <p>CARGO : {{cargo}}</p>
+                    <p>ANO : {{ano}}</p>
+                    <p>BANCA : {{banca}}</p>
+                    <p>ORGAO : {{orgao}}</p>
+                    <p>ASSUNTO : {{assunto}}</p>
+                </div>
+
+                <div>
+                    <br />
+                    <p class="comando">comando :<br>{{comando}}
+                    </p>
+                    <br />
+
+                    <p class="textoItem">
+                        Texto Item : <br>{{texto_item}}
+                    </p>
+                   {% if respondido == False %} 
+                        <form action="{% url 'questao' %}" method="post">
+                        {% csrf_token %}
+                            
+                            {{ form }}
+
+                            <input type="submit" value="Submit" />
+                            
+                        </form>
+
+                    {% else%}
+
+
+                        {% if resultado%}
+                            Acertou ! 
+                        {%else%}
+                            Errou !
+
+                        {% endif %}
+
+                        <form action="{% url 'questao' %}" method="post">
+                        {% csrf_token %}
+                            
+                            {{ form }}
+
+                            <input type="submit" value="Submit" />
+                            
+                        </form>
+
+                    {% endif %}
+                </div>
+
+            </div>
+
 
     </body>
 </html>

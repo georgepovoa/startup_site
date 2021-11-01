@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ApiTitulos,Artigo,Capitulos,Secao,Subsecao,Nivel2,Nivel3,Nivel4
+from .models import ApiTitulos,Artigo,Capitulos,Secao,Subsecao,Nivel2,Nivel3,Nivel4, q_c_q
 from api.models import User, UserProfile
 
 
@@ -44,6 +44,11 @@ class Nivel4Serializer(serializers.ModelSerializer):
     class Meta:
         model = Nivel4
         fields =('id','lei','titulo','capitulo','sec','subsec','artigo','nivel2','nivel3','texto','endereco')
+
+class questaoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = q_c_q
+        fields =('id','assunto','ano','banca','orgao','cargo','questao','tipo','gabarito','comando','texto_item')
 
 
 

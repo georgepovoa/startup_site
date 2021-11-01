@@ -9,9 +9,7 @@ class Nivel4 extends React.Component {
 
         super(props);
 
-        this.state = {
-            nivel4: [],
-            
+        this.state = {      
             isOpen: false,
 
         }
