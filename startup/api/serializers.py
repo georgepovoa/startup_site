@@ -57,7 +57,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserProfile
-        fields = ('title', 'dob', 'address', 'country', 'city', 'zip', 'photo')
+        fields = ('questoes_feitas', 'photo')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

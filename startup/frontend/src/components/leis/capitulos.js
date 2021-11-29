@@ -3,6 +3,7 @@ import Secoes from './secoes';
 import Artigo from './artigos';
 import axios from 'axios';
 import {Artigos_lista, Secao_lista} from "./listas"
+import * as data from "./data.json";
 
 
 class Capitulo extends React.Component {
@@ -34,21 +35,40 @@ class Capitulo extends React.Component {
         const lista_de_secoes = Object.values(secoes)
         const lista_de_artigos = Object.values(artigos)
 
-        if (this.props.aberto) {
-            return (<div>
+        const url = Object.values(this.props.custom_list)
+        const id_custom_view = url
+        const lista_custom_filter_secao = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].secoes
+        const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
 
-                <h3 onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_capitulo}</h3>
-                {lista_de_secoes.map(itens => {
+        if (this.props.aberto) {
+            return (<div className = "capitulo">
+
+                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_capitulo}</p>
+                {/* {lista_de_secoes.map(itens => {
                     if (this.props.id_capitulo == itens.capitulo) {
                         return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens.id} />
                     }
+                })} */}
+
+                {lista_de_secoes.filter(i=>lista_custom_filter_secao.includes(i.id)).map(itens => {
+                    if (this.props.id_capitulo == itens.capitulo) {
+                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens.id} custom_list = {id_custom_view}/>
+                    }
                 })}
-                {lista_de_artigos.map(itens => {
-                    if (this.props.id_capitulo == itens.capitulo && itens.sec === "")  {
+                {/* {lista_de_artigos.map(itens => {
+                    if (this.props.id_capitulo == itens.capitulo && itens.sec === "" && itens.capitulo !=='')  {
                         return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} />
                     }
 
+                })} */}
+
+                {lista_de_artigos.filter(i=>lista_custom_filter_artigo.includes(i.id)).map(itens => {
+                    if (this.props.id_capitulo == itens.capitulo && itens.sec === "" && itens.capitulo !=='')  {
+                        return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} custom_list = {id_custom_view} />
+                    }
+
                 })}
+                
 
 
             </div>

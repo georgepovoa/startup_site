@@ -35,6 +35,53 @@ body {
   overflow: auto;
 }
 
+.titulo-class{
+  font-family: "Arial" !important;
+  font-size: 15px;
 
 
+}
 
+.titulo{
+  text-align: center;
+  font-size: 15px;
+  font-family: "Arial" !important;
+}
+
+.capitulo{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+
+.secao{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+
+.subsec{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+
+.artigo{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+
+.nivel20px{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+.nivel3{
+  text-align: left;
+  font-family: "Arial" !important;
+}
+
+.nivel4{
+  text-align: left;
+  font-family: "Arial "!important;
+}
+
+.correcaoinput{
+  width: 350px;
+}

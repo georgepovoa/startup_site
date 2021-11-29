@@ -53,6 +53,7 @@ export const Capitulo_lista = [
         "titulo": 1,
         "texto": "CAPÍTULO I DOS DIREITOS E DEVERES INDIVIDUAIS E COLETIVOS"
     },
+    
     {
         "id": 1,
         "lei": "cf88",
@@ -2904,6 +2905,7 @@ export const Artigos_lista =
         "texto": "Art. 212. A União aplicará, anualmente, nunca menos de dezoito, e os Estados, o Distrito Federal e os Municípios vinte e cinco por cento, no mínimo, da receita resultante de impostos, compreendida a proveniente de transferências, na manutenção e desenvolvimento do ensino.",
         "endereco": "212"
     },
+
     {
         "id": 230,
         "lei": "cf88",
@@ -27500,3 +27502,7 @@ export const Nivel_4_lista = [
         "endereco": "c"
     }
 ]
+
+export var teste = {
+    teste1:[]
+}

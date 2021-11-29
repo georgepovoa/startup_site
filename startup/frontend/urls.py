@@ -1,9 +1,16 @@
 from django.urls import path
-from.views import index, questao
+from django.urls.conf import include
+from.views import index, questao, questoes_feitas, submit_q_e,register_request,display_Anexo2_images_by_user
 
 urlpatterns = [
     path('',index),
     path('join',index),
-    path('lei',index),
-    path('homequestao',questao,name = "questao")
+    path('lei/<int:id>',index),
+    path('homequestao',questao,name = "questao"),
+    path('feitas',questoes_feitas,name="questoes_feitas"),
+    path('q_e',submit_q_e,name="q_e "),
+    path("accounts/",include('django.contrib.auth.urls')),
+    path("register", register_request, name="register"),
+    path('anexos2', display_Anexo2_images_by_user, name = 'display_anexo2_images'),
+    
 ]

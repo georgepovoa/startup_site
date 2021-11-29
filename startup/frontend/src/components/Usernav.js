@@ -7,12 +7,7 @@ export default class UserNav extends Component{
 
     render(){
         return <div className = "usernavdiv">
-            <div className = "nome-email">
-            <p className = "navfirstname">{this.props.first_name}</p>
-            <p className = "email">{this.props.email} </p>
-            <a href = "#">ajustar conta</a>
-            </div>
-            <div className = "img-usernav"></div>
+            
 
         </div>
     }

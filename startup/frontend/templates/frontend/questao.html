@@ -1,79 +1,88 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8"/>
-        <meta name = 'viewport' content ="width=device-width , initial-scale =1"/>
-        <title>StartUp</title>
-        {%load static%}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-        <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family-roboto:300,400,500,700&display=swap"
-        />
-        <link rel="stylesheet" type="text/css" href="{% static "css/index.css"%}" />
-        <link rel="stylesheet" type="text/css" href="{% static "css/navbar.css"%}" />
-        <link rel="stylesheet" type="text/css" href="{% static "css/content.css"%}" />
-        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    </head>
-    <body>
-        
-        
-        <h5>{{current}}</h5>
-        <div class="homeQuestao">
 
-                <div class="info-bar">
-                    <p>ID :{{id}}</p>
-                    <p>CARGO : {{cargo}}</p>
-                    <p>ANO : {{ano}}</p>
-                    <p>BANCA : {{banca}}</p>
-                    <p>ORGAO : {{orgao}}</p>
-                    <p>ASSUNTO : {{assunto}}</p>
-                </div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name='viewport' content="width=device-width , initial-scale =1" />
+    <title>StartUp</title>
+    {%load static%}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family-roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/navbar.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/content.css"%}" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
 
-                <div>
-                    <br />
-                    <p class="comando">comando :<br>{{comando}}
-                    </p>
-                    <br />
-
-                    <p class="textoItem">
-                        Texto Item : <br>{{texto_item}}
-                    </p>
-                   {% if respondido == False %} 
-                        <form action="{% url 'questao' %}" method="post">
-                        {% csrf_token %}
-                            
-                            {{ form }}
-
-                            <input type="submit" value="Submit" />
-                            
-                        </form>
-
-                    {% else%}
+<body>
 
 
-                        {% if resultado%}
-                            Acertou ! 
-                        {%else%}
-                            Errou !
+    <h5>{{current}}</h5>
+    <div class="homeQuestao">
 
-                        {% endif %}
+        <div class="info-bar">
+            <p>ID :{{id}}</p>
+            <p>CARGO : {{cargo}}</p>
+            <p>ANO : {{ano}}</p>
+            <p>BANCA : {{banca}}</p>
+            <p>ORGAO : {{orgao}}</p>
+            <p>ASSUNTO : {{assunto}}</p>
+        </div>
 
-                        <form action="{% url 'questao' %}" method="post">
-                        {% csrf_token %}
-                            
-                            {{ form }}
+        <div>
+            <br />
+            <p class="comando">comando :<br>{{comando}}
+            </p>
+            <br />
 
-                            <input type="submit" value="Submit" />
-                            
-                        </form>
+            <p class="textoItem">
+                Texto Item : <br>{{texto_item}}
+            </p>
+            {% if respondido == False %}
+            <form action="{% url 'questao' %}" method="post">
+                {% csrf_token %}
 
-                    {% endif %}
-                </div>
+                {{ form }}
 
-            </div>
+                <input type="submit" value="Submit" />
+
+            </form>
+
+            {% else%}
 
 
-    </body>
+            {% if resultado%}
+            Acertou !
+            {%else%}
+            Errou !
+
+            {% endif %}
+
+            <form action='/q_e' method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <input class = "correcaoinput" type = "text" value = "{{texto_item}}" name = "campo_texto"/>
+                
+                <input type="hidden" value={{id}} name="user_id" />
+                <input type="hidden" value={{resultado}} name="resultado" />
+                <input type="hidden" value="{{texto_item}}" name="texto_item" />
+
+
+
+                <input type="submit" value="Submit" />
+
+
+            </form>
+
+            {% endif %}
+        </div>
+
+    </div>
+
+
+</body>
+
 </html>

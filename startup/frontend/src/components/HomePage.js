@@ -33,7 +33,7 @@ export default class HomePage extends Component {
                     <Route exact path="/"><p className = "homepage"> this is Home Page</p></Route>
                     <Route path="/join" component={RoomJoinPage} />
                     <Route path="/create" component={CreateRoomPage}></Route>
-                    <Route path="/lei" component={Lei}></Route>
+                    <Route path="/lei/:id_pv" component={Lei}></Route>
                     <Route path="/homeQuestao" component={HomeQuestao}></Route>
 
                 </Switch>

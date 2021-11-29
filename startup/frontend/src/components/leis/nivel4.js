@@ -23,9 +23,9 @@ class Nivel4 extends React.Component {
         const { isOpen } = this.state; 
 
         if (this.props.aberto) {
-            return (<div>
+            return (<div className = "nivel4">
 
-                <h3 onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_nivel4}</h3>
+                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_nivel4}</p>
                 
             </div>
             )
