@@ -1,6 +1,6 @@
 from django.urls import path
 from django.urls.conf import include
-from.views import index, questao, questoes_feitas, submit_q_e,register_request,display_Anexo2_images_by_user
+from.views import index, questao, questoes_feitas, submit_q_e,register_request,display_Anexo2_images_by_user,home_user_view
 
 urlpatterns = [
     path('',index),
@@ -12,5 +12,5 @@ urlpatterns = [
     path("accounts/",include('django.contrib.auth.urls')),
     path("register", register_request, name="register"),
     path('anexos2', display_Anexo2_images_by_user, name = 'display_anexo2_images'),
-    
+    path("homeuser", home_user_view, name="homeuser")
 ]

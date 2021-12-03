@@ -1,4 +1,5 @@
 from django import forms, http
+from django.db.models import fields
 from django.http.request import HttpHeaders
 from django.http.response import HttpResponse
 import json
@@ -8,6 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 import rest_framework
 from api.models import User, UserProfile, q_c_q, Anexo2
+import json
 
 # Create your views here.
 
@@ -26,10 +28,14 @@ class PostResposta(forms.Form):
 
 
 class AnexoForm(forms.ModelForm):
-  
+    titulo = forms.CharField(required=False)
+    grupo = forms.CharField(required=False)
+    photo = forms.FileField(required=False)
+    
     class Meta:
         model = Anexo2
-        fields = ['titulo','grupo','photo']
+        fields=['photo']
+        
 
 
 def index(request, *args, **kwargs):
@@ -54,7 +60,8 @@ def submit_q_e(request, *args, **kwargs):
     usuario = UserProfile.objects.get(user = request.user)
     usuario_para_anexo = User.objects.get(email = request.user).id
     form = AnexoForm(request.POST, request.FILES)
-    if form.is_valid():
+    if form.is_valid() and request.FILES:
+        print(request.FILES, "REQUESTFILES")
         new_anex = Anexo2(user = request.user,titulo =form.cleaned_data['titulo'],show_name=form.cleaned_data['titulo'],grupo = "filho",photo = request.FILES['photo'],endereco = "cf88,0,,,,0,,,")
         new_anex.save()
         print(new_anex)
@@ -65,6 +72,10 @@ def submit_q_e(request, *args, **kwargs):
     correcao = request.POST["campo_texto"].split()
 
     id = int(request.POST["user_id"])
+    cargo = request.POST["cargo"]
+    banca = request.POST["banca"]
+    ano = request.POST["ano"]
+    orgao = request.POST["orgao"]
 
     resultado = bool(request.POST["resultado"])
 
@@ -90,6 +101,29 @@ def submit_q_e(request, *args, **kwargs):
     usuario.questoes_feitas = json.dumps(listIWantToStore)
     usuario.save(update_fields=['questoes_feitas'])
     print(usuario.questoes_feitas)
+
+    # Salva no data_q.JSON
+    y={}
+    y[str(id)] = {
+    "texto_item":' '.join(correcao),
+    "cargo":cargo,
+    "ano":ano,
+    "cargo":cargo,
+    "banca":banca,
+    "orgao":orgao,
+    "titulo":0,
+     "capitulo":'',
+     "artigo": 0,
+     "secao":'',
+     "subsecao":'',
+     "nivel2":0,
+     "nivel3":'',
+     "nivel4":''
+     
+    }
+    write_json_q(str(request.user),y)
+
+
     return redirect('questao')
 
 
@@ -242,3 +276,30 @@ def display_Anexo2_images_by_user(request):
         # getting all the objects of hotel.
         Anexos = Anexo2.objects.all().filter(user = request.user) 
         return render(request=request,template_name = 'frontend/display_anexo2_images.html',context = {'anexos' : Anexos})
+
+
+
+### DEF para salvar questão na lei
+def write_json_q(user,new_data, filename=r'/home/george/Documents/djreact/startup/frontend/src/components/leis/data_questoes.json'):
+    with open(filename,'r+') as file:
+          # First we load existing data into a dict.
+        file_data = json.load(file)
+        # Join new_data with file_data inside emp_details
+        if user in file_data:
+            print("já tem")
+            file_data[user].update(new_data)
+        else: 
+            file_data[user] = new_data
+        # Sets file's current position at offset.
+        file.seek(0)
+        # convert back to json.
+        json.dump(file_data, file, indent =0)
+
+
+def home_user_view(request):
+  
+    if request.method == 'GET':
+  
+        # getting all the objects of hotel.
+        
+        return HttpResponse("<h1>USER: {} WELCOME MTF</h1>".format(str(request.user)))

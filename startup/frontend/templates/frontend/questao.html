@@ -58,19 +58,31 @@
             Errou !
 
             {% endif %}
-
             <form action='/q_e' method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+            {% if gabarito == "Errado"%}
+            
+                
 
                 {{ form.as_p }}
 
                 <input class = "correcaoinput" type = "text" value = "{{texto_item}}" name = "campo_texto"/>
                 
+               
+            {%else %}
+                {{ form.as_p }}
+                <input class = "correcaoinput" type = "hidden" value = "{{texto_item}}" name = "campo_texto"/>
+                
+                
+
+            {% endif %}
                 <input type="hidden" value={{id}} name="user_id" />
                 <input type="hidden" value={{resultado}} name="resultado" />
                 <input type="hidden" value="{{texto_item}}" name="texto_item" />
-
-
+                <input type="hidden" value="{{ano}}" name = "ano" />
+                <input type="hidden" value="{{cargo}}" name = "cargo" />
+                <input type="hidden" value="{{banca}}" name = "banca" />
+                <input type="hidden" value="{{orgao}}" name = "orgao" />
 
                 <input type="submit" value="Submit" />
 

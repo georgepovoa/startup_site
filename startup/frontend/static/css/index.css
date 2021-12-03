@@ -46,42 +46,56 @@ body {
   text-align: center;
   font-size: 15px;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .capitulo{
-  text-align: left;
+  text-align: center;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .secao{
-  text-align: left;
+  text-align: center;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .subsec{
-  text-align: left;
+  text-align: center;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .artigo{
   text-align: left;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .nivel20px{
   text-align: left;
   font-family: "Arial" !important;
+  margin :10px
 }
 .nivel3{
   text-align: left;
   font-family: "Arial" !important;
+  margin :10px
 }
 
 .nivel4{
   text-align: left;
   font-family: "Arial "!important;
+  margin :10px
 }
 
 .correcaoinput{
   width: 350px;
+}
+
+.questoes{
+  text-align: center;
+  font-family: "Arial "!important;
+  margin :10px
 }

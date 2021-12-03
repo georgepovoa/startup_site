@@ -59,7 +59,7 @@ class Titulo extends React.Component {
 
             {lista_de_capitulos.filter(i => lista_custom_filter_capitulo.includes(i.id)).map(itens => {
                 if (itens.titulo == this.props.id_titulo) {
-                    return <Capitulos id_capitulo={itens.id} texto={itens.texto} aberto={isOpen} custom_list = {id_custom_view} ></Capitulos>
+                    return <Capitulos id_capitulo={itens.id} texto={itens.texto} aberto={isOpen} custom_list = {id_custom_view} current_user = {this.props.current_user}></Capitulos>
                 }
 
 
@@ -77,7 +77,7 @@ class Titulo extends React.Component {
             {lista_de_artigos.filter(i => lista_custom_filter_artigo.includes(i.id)).map(itens => {
                 if (itens.capitulo == "" && itens.titulo === this.props.id_titulo) {
 
-                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} custom_list = {id_custom_view} ></Artigo >
+                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} custom_list = {id_custom_view} current_user = {this.props.current_user}></Artigo >
                 }
             })}
 
