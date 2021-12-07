@@ -26,7 +26,7 @@ y = {
      
     }
      
-write_json(y)
+# write_json(y)
 
 
 
@@ -64,3 +64,40 @@ y[str(id)] = {
 
 
 #write_json_q("teste@teste.com",y)
+
+
+
+a = "A reserva legal N\u00c3O relativa admite a regulamenta\u00e7\u00e3o da norma constitucional por atos normativos secund\u00e1rios, como portarias e resolu\u00e7\u00f5es."
+b = "A reserva legal tende a fazer N\u00c3O relativa admite a regulamenta\u00e7\u00e3o da norma tal a tal constitucional por atos normativos e coisa e tal secund\u00e1rios, como portarias e resolu\u00e7\u00f5es."
+
+def ver_diferenca(a,b):
+    a = a.split(" ")
+    b = b.split(" ")
+
+    if a>b:
+        pass
+    
+    else:
+        ok = True
+        while ok:
+            for i in range(len(b)):
+                try:
+                    if b[i] != a[i] :
+                        b.insert(i,"@@@")
+                        ultimo_match = i
+                        break
+                except:
+                    pass
+            
+            for i in range(len(b)):
+
+                try:
+                    if a[ultimo_match] == b[i]:
+                        print(a[ultimo_match],b[i])
+                        b.insert(i,'@@@')
+                        break
+                except:
+                    pass
+    print(' '.join(a),' '.join(b))
+
+ver_diferenca(a,b)

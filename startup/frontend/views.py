@@ -85,10 +85,11 @@ def submit_q_e(request, *args, **kwargs):
     # esse for é para colocar em maiusculo as palavras que não existiam antes
     # Necessário aprimorar para não perceber só palavras novas
     for i in range(len(correcao)):
+        if correcao[i] != texto_item:
+            correcao.insert(i,"@@@")
 
-        if correcao[i] not in texto_item:
-            
-            correcao[i] = correcao[i].upper()
+            #if correcao[i+1] == texto_item[i]
+
 
     # Salva ou caso não exista, cria uma nova.
 
@@ -300,6 +301,13 @@ def home_user_view(request):
   
     if request.method == 'GET':
   
-        # getting all the objects of hotel.
+        data = json.load(open(f'frontend/src/components/leis/data.json'))
+        listas_personalizadas = []
+        for i in data["lei_personalizada"]:
+            listas_personalizadas.append([i["id"],"/lei/{}".format(i["id"])])
         
-        return HttpResponse("<h1>USER: {} WELCOME MTF</h1>".format(str(request.user)))
+        
+        return render(request,template_name="frontend/homeuser.html", context=
+        {"lista_leis":listas_personalizadas,
+        "user":request.user
+        })

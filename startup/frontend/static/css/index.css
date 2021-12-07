@@ -46,48 +46,56 @@ body {
   text-align: center;
   font-size: 15px;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .capitulo{
   text-align: center;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .secao{
   text-align: center;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .subsec{
   text-align: center;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .artigo{
   text-align: left;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .nivel20px{
   text-align: left;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 .nivel3{
   text-align: left;
   font-family: "Arial" !important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .nivel4{
   text-align: left;
   font-family: "Arial "!important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
 
 .correcaoinput{
@@ -97,5 +105,6 @@ body {
 .questoes{
   text-align: center;
   font-family: "Arial "!important;
-  margin :10px
+  margin :10px;
+  cursor:pointer;
 }
