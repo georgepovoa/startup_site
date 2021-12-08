@@ -10,6 +10,7 @@ from django.contrib import messages
 import rest_framework
 from api.models import User, UserProfile, q_c_q, Anexo2
 import json
+import difflib
 
 # Create your views here.
 
@@ -55,6 +56,31 @@ def questoes_feitas(request, *args, **kwargs):
 
 
 def submit_q_e(request, *args, **kwargs):
+    def negritar(antes,depois):
+        if antes == depois:
+            return depois.split()
+        a = antes.split()
+        b = depois.split()
+        e = []
+        d = []
+        c = difflib.context_diff(a, b,lineterm="",n=200)
+        passou_ast = False
+        pode = False
+
+        for i in c:
+            if "----" in i:
+                pode = True
+            elif pode:
+                
+                if "!" in i:
+                    i = i.replace("!", "@@@") + " @@@"
+                    
+                elif "+" in i:
+                    i = i.replace("+","@@@") + " @@@"
+                d.append(i)
+        if len(d)<1:
+            return depois.split()
+        return d
     # o submit_q_e é o form que aparece depois do usuário responder 
     # Só as questões falsas pq precisam de correção do usuário
     usuario = UserProfile.objects.get(user = request.user)
@@ -69,7 +95,7 @@ def submit_q_e(request, *args, **kwargs):
         print("ERRO"*30)
         print(form.errors )
     #recebe correcao e separa em uma lista para colocar em Maiúsculo as palavras alteradas0
-    correcao = request.POST["campo_texto"].split()
+    correcao = request.POST["campo_texto"]
 
     id = int(request.POST["user_id"])
     cargo = request.POST["cargo"]
@@ -79,16 +105,12 @@ def submit_q_e(request, *args, **kwargs):
 
     resultado = bool(request.POST["resultado"])
 
-    texto_item = request.POST["texto_item"].split()
+    texto_item = request.POST["texto_item"]
 
     
     # esse for é para colocar em maiusculo as palavras que não existiam antes
     # Necessário aprimorar para não perceber só palavras novas
-    for i in range(len(correcao)):
-        if correcao[i] != texto_item:
-            correcao.insert(i,"@@@")
-
-            #if correcao[i+1] == texto_item[i]
+    correcao = negritar(texto_item,correcao)
 
 
     # Salva ou caso não exista, cria uma nova.
@@ -168,7 +190,7 @@ def questao(request, *args, **kwargs):
     tipo = data.tipo
     gabarito = data.gabarito
     comando = data.comando
-    texto_item = data.texto_item
+    texto_item = data.texto_item.strip()
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -230,7 +252,7 @@ def questao(request, *args, **kwargs):
                               'tipo': tipo,
                               'gabarito': gabarito,
                               'comando': comando,
-                              'texto_item': texto_item,
+                              'texto_item': texto_item.strip(),
                               'resultado': resultado,
                               'respondido': True
 
@@ -250,7 +272,7 @@ def questao(request, *args, **kwargs):
                       'tipo': tipo,
                       'gabarito': gabarito,
                       'comando': comando,
-                      'texto_item': texto_item,
+                      'texto_item': texto_item.strip(),
                       'respondido': False
                   }
                   )

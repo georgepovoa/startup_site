@@ -1,5 +1,7 @@
 import json
 import ujson
+import difflib
+from difflib import *
 
 def write_json(new_data, filename=r'/home/george/Documents/djreact/startup/frontend/src/components/leis/data.json'):
     with open(filename,'r+') as file:
@@ -67,37 +69,32 @@ y[str(id)] = {
 
 
 
-a = "A reserva legal N\u00c3O relativa admite a regulamenta\u00e7\u00e3o da norma constitucional por atos normativos secund\u00e1rios, como portarias e resolu\u00e7\u00f5es."
-b = "A reserva legal tende a fazer N\u00c3O relativa admite a regulamenta\u00e7\u00e3o da norma tal a tal constitucional por atos normativos e coisa e tal secund\u00e1rios, como portarias e resolu\u00e7\u00f5es."
+a = "Estrangeiros não podem ser agentes públicos."
+b = "Estrangeiros podem ser agentes públicos."
 
-def ver_diferenca(a,b):
-    a = a.split(" ")
-    b = b.split(" ")
+def negritar(antes,depois):
+    a = antes.split()
+    b = depois.split()
+    e = []
+    d = []
+    c = difflib.context_diff(a, b,lineterm="",n=200)
+    passou_ast = False
+    pode = False
 
-    if a>b:
-        pass
-    
-    else:
-        ok = True
-        while ok:
-            for i in range(len(b)):
-                try:
-                    if b[i] != a[i] :
-                        b.insert(i,"@@@")
-                        ultimo_match = i
-                        break
-                except:
-                    pass
+    for i in c:
+        if "----" in i:
+            pode = True
+        elif pode:
             
-            for i in range(len(b)):
+            if "!" in i:
+                i = i.replace("!", "@@@") + " @@@"
+                
+            elif "+" in i:
+                i = i.replace("+","@@@") + " @@@"
+            d.append(i)
+    if len(d)<1:
+        return depois
+    return d
 
-                try:
-                    if a[ultimo_match] == b[i]:
-                        print(a[ultimo_match],b[i])
-                        b.insert(i,'@@@')
-                        break
-                except:
-                    pass
-    print(' '.join(a),' '.join(b))
-
-ver_diferenca(a,b)
+f = negritar(a,b)
+print(f)
