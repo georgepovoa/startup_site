@@ -22,7 +22,7 @@ class PostResposta(forms.Form):
                ('Errado', 'Errado')]
 
     resposta_user = forms.ChoiceField(
-        choices=CHOICES, widget=forms.RadioSelect)
+        choices=CHOICES, widget=forms.RadioSelect,label="")
 
 
 
@@ -30,7 +30,7 @@ class PostResposta(forms.Form):
 
 class AnexoForm(forms.ModelForm):
     titulo = forms.CharField(required=False)
-    grupo = forms.CharField(required=False)
+    grupo = forms.CharField(required=False,widget=forms.HiddenInput())
     photo = forms.FileField(required=False)
     
     class Meta:
@@ -48,9 +48,6 @@ def questoes_feitas(request, *args, **kwargs):
     return render(request, 'frontend/questoes_feitas.html',{
         'current' : request.user,
         'questoes_feitas':jsonDec.decode(usuario.questoes_feitas)
-
-
-
 
     })
 
@@ -332,4 +329,13 @@ def home_user_view(request):
         return render(request,template_name="frontend/homeuser.html", context=
         {"lista_leis":listas_personalizadas,
         "user":request.user
+        })
+    
+
+def profile(request):
+    usuario = UserProfile.objects.get(user = request.user)
+
+    if request.method == "GET":
+        return render(request,template_name="frontend/profile.html",context = {
+        'questoes_feitas':jsonDec.decode(usuario.questoes_feitas)
         })

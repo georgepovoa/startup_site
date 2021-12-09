@@ -43,12 +43,18 @@ class Lei extends React.Component {
 
         return (<div>
             <nav>
-                <ul>
-                    <li><a href="/homequestao">Resolver Questoes</a></li>
-                    <li><a href="/accounts/login">Login</a></li>
-                    <li><a href="/feitas">Questoes Feitas</a></li>
-                    <li><a href="/lei/0">Lei</a></li>
-                </ul>
+                <a href="/"><img src="https://www.logomaker.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6khvCBqRBPmxjNwXs1M3EMoAJtliMkhvBq9...Q... "/></a>
+
+                <div className="divnav">
+                    <a href="/homequestao">Resolver Questoes</a>
+
+                    <a href="/feitas">Questoes Feitas</a>
+                    <a href="/lei/0">Lei</a>
+                    <a href="/accounts/logout">Logout</a>
+
+                    <a href="/accounts/login">Login</a>
+
+                </div>
             </nav>
             <h1>{id_pv}</h1>
             <h1>{current_user}</h1>

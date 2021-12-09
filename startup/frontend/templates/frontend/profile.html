@@ -1,0 +1,23 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+<h1> {{user.get_username}}</h1>
+
+<div class = "profireQFeitas">
+    <h1>ultimas Questoes Feitas</h1>
+{% for i in questoes_feitas %}
+    <p>{{i.0}}</p>
+    {% endfor %}</h1>
+</div>
+
+<div class = "profileAnexo">
+    <h1> Anexos </h1>
+    <a href = "/anexos2">Anexos</a>
+
+</div>
+
+
+<div class = "profileCadernos">
+    <h1> Cadernos Salvos</h1>
+</div>
+{% endblock content %}

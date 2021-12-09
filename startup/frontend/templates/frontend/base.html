@@ -17,21 +17,20 @@
 
 <body>
     <nav>
-        <ul>
-            <li><a href="/homequestao">Resolver Questoes</a></li>
-            {%if user.is_authenticated%}
-            <li><a href="/accounts/logout">Logout</a></li>
-            {% comment %} {{ user.get_username }} {% endcomment %}
-            {%else%}
-            <li><a href="/accounts/login">Login</a></li>
+        <a href = "/"><img src= "https://www.logomaker.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6khvCBqRBPmxjNwXs1M3EMoAJtliMkhvBq9...Q... "/></a>
 
-            {% endif %}
-            <li><a href="/feitas">Questoes Feitas</a></li>
-            <li><a href="/lei/0">Lei</a></li>
+        <div class = "divnav">
+            <a href="/homequestao">Resolver Questoes</a>
+            
+           <a href="/feitas">Questoes Feitas</a>
+            <a href="/lei/0">Lei</a>
             {% if user.is_authenticated %}
-            <l1><a>{{user.get_username}}</a><li>
+            <a href = "/profile">{{user.get_username}}</a>
+            <a href="/accounts/logout">Logout</a>
+            {%else%}
+            <a href="/accounts/login">Login</a>
             {% endif %}
-          </ul>
+        </div>
     </nav>
 
     {% block content %}

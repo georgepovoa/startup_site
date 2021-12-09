@@ -3,30 +3,29 @@
     <div class="homeQuestao">
 
         <div class="info-bar">
-            <p>ID :{{id}}</p>
-            <p>CARGO : {{cargo}}</p>
-            <p>ANO : {{ano}}</p>
-            <p>BANCA : {{banca}}</p>
-            <p>ORGAO : {{orgao}}</p>
-            <p>ASSUNTO : {{assunto}}</p>
+            <p class = "cargo">CARGO : {{cargo}}</p>
+            <p class = "ano">ANO : {{ano}}</p>
+            <p class = "banca">BANCA : {{banca}}</p>
+            <p class = "orgao">ORGAO : {{orgao}}</p>
         </div>
 
         <div>
             <br />
-            <p class="comando">comando :<br>{{comando}}
+            <p class="comando">{{comando}}
             </p>
             <br />
 
             <p class="textoItem">
-                Texto Item : <br>{{texto_item}}
+            {{texto_item}}
             </p>
             {% if respondido == False %}
+            </br>
             <form action="{% url 'questao' %}" method="post">
                 {% csrf_token %}
 
                 {{ form }}
 
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Responder" />
 
             </form>
 
@@ -34,9 +33,9 @@
 
 
             {% if resultado%}
-            Acertou !
+            <b>Acertou !</b>
             {%else%}
-            Errou !
+            <b>Errou !</b>
 
             {% endif %}
             <form action='/q_e' method="post" enctype="multipart/form-data">
@@ -47,7 +46,7 @@
 
                 {{ form.as_p }}
 
-                <input class = "correcaoinput" type = "text" value ="{{texto_item}}" name = "campo_texto" />
+                <textarea class = "correcaoinput" name = "campo_texto">{{texto_item}}</textarea>
                 
                
             {%else %}
@@ -65,7 +64,8 @@
                 <input type="hidden" value="{{banca}}" name = "banca" />
                 <input type="hidden" value="{{orgao}}" name = "orgao" />
 
-                <input type="submit" value="Submit" />
+                <br/>
+                <input type="submit" value="Enviar" />
 
 
             </form>
