@@ -1,9 +1,9 @@
 from django.urls import path
 from django.urls.conf import include
-from.views import index, questao, questoes_feitas, submit_q_e,register_request,display_Anexo2_images_by_user,home_user_view,profile
+from.views import index, questao, questoes_feitas, submit_q_e,register_request,display_Anexo2_images_by_user,home_user_view,profile,homepage
 
 urlpatterns = [
-    path('',home_user_view, name="homeuser"),
+    path('',homepage, name="homepage"),
     path('join',index),
     path('lei/<int:id>',index),
     path('homequestao',questao,name = "questao"),

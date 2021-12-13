@@ -1,3 +1,202 @@
+:root {
+  --azul:rgb(114, 137, 218);
+  --cinza-calro:rgb(153, 170, 181);
+  --cinza:rgb(44, 47, 51);
+  --escuro: 	rgb(35, 39, 42);
+}
+
+
+/*https://www.youtube.com/watch?v=X1dz0xRbSJc
+icons <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>)
+HOME PAGE
+*/
+*,
+*::before,
+*::after{
+  box-sizing: border-box  ;
+}
+
+
+img{
+  max-width: 100%;
+  display: block;
+}
+
+h1,h2,h3,p{
+  margin: 0;
+}
+
+.container{
+  width: 85%;
+  max-width: 65em;
+  margin: 0 auto;
+}
+
+
+.btn{
+  display: inline-block;
+  text-decoration: none;
+  color: var(--clr-text,white);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+  padding: .5em 1.25em ;
+  background: var(--clr-accent,blue);
+  border-radius: .25em;
+  transition: transform 250ms ease-in-out,
+              opacity 175ms linear;
+}
+
+.btn.hover,
+.btn:focus{
+  transform: scale(1.1);
+  opacity: .9;
+}
+
+.primary-title{
+  font-size: 4rem;
+  font-size: clamp(3rem,5vw +1rem,4.5rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+
+}
+
+section{
+  padding: 7em 0;
+}
+.section-title{
+  text-align: center;
+  font-size: clamp(2.5rem,5vw+1rem,4rem );
+  line-height: 1;
+  margin-bottom: 5rem;
+
+}
+
+
+
+.hero{
+  text-align: center;
+  padding: 15em 0;
+  background-image: url("../images/tabledesktop.jpg"),
+  radial-gradient(#777,#333);
+  background-blend-mode: multiply;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  --clr-accent:#faa700
+}
+
+.spacing >*+*{
+  margin-top: var(--spacer,2rem);
+}
+
+
+.split{
+  display: flex;
+  flex-wrap: wrap;
+  gap:1em;
+  justify-content: center;
+}
+
+.split >*{
+  flex-basis: 30%;
+  min-width: 15em;
+}
+
+
+
+
+.featured{
+  background:#eee;
+  color: black;
+}
+
+.featured__itens{
+  display: block;
+  position: relative;
+  transform: scale(.85);
+  transition:  transform 250ms ease-in-out;
+  text-decoration: none;
+  color: #333;
+  text-align: center;
+  line-height: 1.2;
+
+
+}
+
+.featured__itens:hover,
+.featured__itens:focus{
+  transform: scale(1);
+}
+
+.featured__itens::after{
+  content:'';
+  position: absolute;
+  top:0;
+  left: 0;
+
+  padding: 100% 100% 0 0;
+  border-radius: 50%;
+  z-index: -1;
+  background:blueviolet ;
+}
+
+.featured__details span{
+  display: block;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.featured__details{
+  opacity: 0;
+  transition:  opacity 250ms linear;
+}
+
+.featured__itens:hover .featured__details,
+.featured__itens:focus .featured__details{
+  opacity: 1;
+}
+
+.product{
+  background: radial-gradient(var(--clr-inner,limegreen),var(--clr-outer,purple));
+  padding: 3em ;
+  border-radius: 1em;
+  margin-bottom: 3em;
+  text-align: center;
+  
+
+}
+
+.our-products{
+  background: white;
+}
+.product__title{
+  font-size: 4rem;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 0 .2em #333;
+}
+
+.produto-branco{
+  --clr-inner:#faa700;
+  --clr-outer:#e48d00;
+  --clr-accent: #a1173c;
+}
+
+.produto-azul{
+  --clr-inner:#fce4b3;
+  --clr-outer:#eac886;
+  --clr-accent: #2f4858;
+}
+
+.produto-preto{
+  --clr-inner:#6dd5ed;
+  --clr-outer:#2193b0;
+  --clr-accent: #008951;
+}
+/*ytbvideo*/
+
+
+/*HOME PAGE*/
 html,
 body {
   height: 100% ;
@@ -5,6 +204,9 @@ body {
   padding: 0 ;
   background-color: black;
   color: white;
+  /*ytbvideo*/
+  line-height: 1.6;
+  /*ytbvideo*/
 }
 
 #main {
@@ -33,7 +235,7 @@ body {
 }
 
 
-
+/* LEI*/
 .titulo-class{
   font-family: "Arial" !important;
   font-size: 15px;
@@ -96,20 +298,14 @@ body {
   margin :10px;
   cursor:pointer;
 }
+/* LEI*/
 
-.correcaoinput{
-  width: 350px;
-}
 
-.questoes{
-  text-align: center;
-  font-family: "Arial "!important;
-  margin :10px;
-  cursor:pointer;
-}
+
+/*NAV*/
 
 nav{
-  display: -webkit-box;
+  display: inline-flex;
   
 }
 
@@ -132,11 +328,29 @@ nav img{
   margin: auto;
 }
 
+/*NAV*/
+
+
+/* QUESTOES*/
+
+.correcaoinput{
+  width: 350px;
+}
+
+.questoes{
+  text-align: center;
+  font-family: "Arial "!important;
+  margin :10px;
+  cursor:pointer;
+}
+
+
 .homeQuestao{
   margin-left: 15%;
   margin-right: 15%;
   overflow: auto;
   list-style-type: none;
+  text-align: center;
 }
 
 .homeQuestao li{
@@ -145,31 +359,124 @@ nav img{
 }
 
 .homeQuestao p{
-  margin: 5px;
+  margin-top:5px;
   
 }
 
 .homeQuestao textarea{
   width: 100%;
   height: 100%;
+  
 }
 
 .info-bar{
   display: inline-flex;
+  justify-content: center;
+
+/* QUESTOES*/
+
+}
+.conteudo-questao{
+  text-align: left;
+}
+
+/*RADIO BTN*/
+.resposta-radio input{
+  display: inline-flex;
+}
+
+.wrapper{
+  display: inline-flex;
+  background: black;
+  height: 5rem;
+  width: 15rem;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 20px 15px;
+  box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
   
-
+}
+.c-e-forms{
+  text-align: center;
 }
 
 
-
-.info-bar p{
-  padding: 5px;
-  border-right-style: solid;
-  border-width: 1px;
+.wrapper .option{
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
   
-
+  transition: all 0.3s ease;
+}
+.wrapper .option .dot{
+  height: 20px;
+  width: 20px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  position: relative;
+}
+.wrapper .option .dot::before{
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #0069d9;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+input[type="radio"]{
+  display: none;
+}
+#option-1:checked:checked ~ .option-1,
+#option-2:checked:checked ~ .option-2{
+  border-color: #0069d9;
+  background: #0069d9;
+}
+#option-1:checked:checked ~ .option-1 .dot,
+#option-2:checked:checked ~ .option-2 .dot{
+  background: #fff;
+}
+#option-1:checked:checked ~ .option-1 .dot::before,
+#option-2:checked:checked ~ .option-2 .dot::before{
+  opacity: 1;
+  transform: scale(1);
+}
+.wrapper .option span{
+  font-size: 14px;
+  color: #808080;
+}
+#option-1:checked:checked ~ .option-1 span,
+#option-2:checked:checked ~ .option-2 span{
+  color: #fff;
 }
 
-.info-bar .orgao{
-  border-right-style: none;
+
+
+.responder-questao{
+  background: #fff;
+  height: 60%;
+  width:20%; 
+  font-size: 16px;
+  
+  
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+  
+  transition: all 0.3s ease;
 }
+/* QUESTOES*/
+

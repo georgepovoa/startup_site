@@ -193,8 +193,8 @@ def questao(request, *args, **kwargs):
 #Primeiro if é só da resposta
     if request.method == 'POST':
         form = PostResposta(request.POST)
-        if form.is_valid():
-            resposta_user = form.cleaned_data["resposta_user"]
+        if True:
+            resposta_user = request.POST["resposta_user"]
             print(resposta_user, request.user)
             resultado = resposta_user == gabarito
             print(resultado, resposta_user, gabarito)
@@ -339,3 +339,6 @@ def profile(request):
         return render(request,template_name="frontend/profile.html",context = {
         'questoes_feitas':jsonDec.decode(usuario.questoes_feitas)
         })
+
+def homepage(request):
+    return render(request,template_name="frontend/homepage.html")

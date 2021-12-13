@@ -3,13 +3,13 @@
     <div class="homeQuestao">
 
         <div class="info-bar">
-            <p class = "cargo">CARGO : {{cargo}}</p>
-            <p class = "ano">ANO : {{ano}}</p>
-            <p class = "banca">BANCA : {{banca}}</p>
-            <p class = "orgao">ORGAO : {{orgao}}</p>
+            <p class = "cargo">( {{cargo}}-</p>
+            <p class = "ano"> {{ano}}-</p>
+            <p class = "banca"> {{banca}}-</p>
+            <p class = "orgao"> {{orgao}})</p>
         </div>
 
-        <div>
+        <div class= "conteudo-questao">
             <br />
             <p class="comando">{{comando}}
             </p>
@@ -20,12 +20,22 @@
             </p>
             {% if respondido == False %}
             </br>
-            <form action="{% url 'questao' %}" method="post">
+            <form action="{% url 'questao' %}" method="post" class = "c-e-forms">
                 {% csrf_token %}
-
-                {{ form }}
-
-                <input type="submit" value="Responder" />
+                <div class="wrapper">
+                    <input type="radio" name="select" id="option-1" checked>
+                    <input type="radio" name="select" id="option-2">
+                        <label for="option-1" class="option option-1">
+                        <div class="dot"></div>
+                            <span>Certo</span>
+                            </label>
+                        <label for="option-2" class="option option-2">
+                        <div class="dot"></div>
+                            <span>Errado</span>
+                        </label>
+                    </div>
+                    <br>
+                <button type = "submit" class = "responder-questao"> Responder</button>
 
             </form>
 
