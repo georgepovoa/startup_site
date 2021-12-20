@@ -2,7 +2,6 @@ import React from 'react';
 import Capitulos from './capitulos';
 import ReactDOM from 'react-dom';
 import Artigo from './artigos';
-import { Capitulo_lista, Artigos_lista } from "./listas"
 import * as data from "./data.json";
 
 
@@ -15,29 +14,43 @@ class Titulo extends React.Component {
         super(props);
 
         this.state = {
-            capitulos: Capitulo_lista,
-            artigos: Artigos_lista,
+            capitulos: [],
+            artigos: [],
             isOpen: false,
         }
     }
 
     async componentDidMount() {
-        // const response = await axios.get('/api/capitulos')
+        var lista_recebidos = this.props.lista_de_subordinados
 
-        // this.setState({ capitulos: response.data })
+        if ( lista_recebidos.constructor === Array) {
 
 
+            var artigo = []
+            var capitulo = []
 
-        // const resposta = await axios.get('/api/artigo')
+            lista_recebidos.map(async i => {
+                var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+                if (subordinado.data[0].tipo == "artigo") {
+                    artigo.push(subordinado.data)
+                }
+                else {
+                    capitulo.push(subordinado.data)
+                }
+            })
 
-        // this.setState({ artigos: resposta.data })
+
+            this.setState({
+                capitulos: capitulo,
+                artigos: artigo
+            })
+        }
 
     }
 
     render() {
+
         const { capitulos, isOpen, artigos } = this.state;
-        const lista_de_capitulos = Object.values(capitulos)
-        const lista_de_artigos = Object.values(artigos)
 
 
         const url = Object.values(this.props.custom_list)
@@ -56,12 +69,12 @@ class Titulo extends React.Component {
 
 
             })} */}
+            {capitulos.sort(function (a, b) {
+                return parseFloat(a[0]._id) - parseFloat(b[0]._id);
+            }).map(itens => {
 
-            {lista_de_capitulos.filter(i => lista_custom_filter_capitulo.includes(i.id)).map(itens => {
-                if (itens.titulo == this.props.id_titulo) {
-                    return <Capitulos id_capitulo={itens.id} texto={itens.texto} aberto={isOpen} custom_list = {id_custom_view} current_user = {this.props.current_user}></Capitulos>
-                }
 
+                return <Capitulos id_capitulo={itens[0]._id} texto={itens[0].texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens[0].subordinado}></Capitulos>
 
 
             })}
@@ -74,11 +87,11 @@ class Titulo extends React.Component {
                 }
             })} */}
 
-            {lista_de_artigos.filter(i => lista_custom_filter_artigo.includes(i.id)).map(itens => {
-                if (itens.capitulo == "" && itens.titulo === this.props.id_titulo) {
+            {artigos.sort(function (a, b) {
+                return parseFloat(a[0]._id) - parseFloat(b[0]._id);
+            }).map(itens => {
+                return <Artigo aberto={isOpen} texto={itens[0].texto} id_artigo={itens[0]._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens[0].subordinado} ></Artigo >
 
-                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} custom_list = {id_custom_view} current_user = {this.props.current_user}></Artigo >
-                }
             })}
 
 

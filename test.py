@@ -16,19 +16,19 @@ def write_json(new_data, filename=r'/home/george/Documents/djreact/startup/front
  
     # python object to be appended
 y = {
-    "id":3,
-    "titulo":[1],
-     "capitulos": [k for k in range(1,100)],
-     "artigos": [k for k in range(1,280)],
-     "secoes":[k for k in range(1,100)],
-     "subsecoes":[k for k in range(1,100)],
-     "nivel2":[k for k in range(1,1550)],
-     "nivel3":[k for k in range(1,600)],
-     "nivel4":[k for k in range(1,100)]
+    "id":0,
+    "titulo":[0,26,273,669,1484,1569,1968,2098,2474],
+     "capitulos": [k for k in range(1,2000)],
+     "artigos": [k for k in range(1,2000)],
+     "secoes":[k for k in range(1,2000)],
+     "subsecoes":[k for k in range(1,2000)],
+     "nivel2":[k for k in range(1,2000)],
+     "nivel3":[k for k in range(1,2000)],
+     "nivel4":[k for k in range(1,2000)]
      
     }
      
-# write_json(y)
+write_json(y)
 
 
 
@@ -69,32 +69,32 @@ y[str(id)] = {
 
 
 
-a = "Estrangeiros não podem ser agentes públicos."
-b = "Estrangeiros podem ser agentes públicos."
+# a = "Estrangeiros não podem ser agentes públicos."
+# b = "Estrangeiros podem ser agentes públicos."
 
-def negritar(antes,depois):
-    a = antes.split()
-    b = depois.split()
-    e = []
-    d = []
-    c = difflib.context_diff(a, b,lineterm="",n=200)
-    passou_ast = False
-    pode = False
+# def negritar(antes,depois):
+#     a = antes.split()
+#     b = depois.split()
+#     e = []
+#     d = []
+#     c = difflib.context_diff(a, b,lineterm="",n=200)
+#     passou_ast = False
+#     pode = False
 
-    for i in c:
-        if "----" in i:
-            pode = True
-        elif pode:
+#     for i in c:
+#         if "----" in i:
+#             pode = True
+#         elif pode:
             
-            if "!" in i:
-                i = i.replace("!", "@@@") + " @@@"
+#             if "!" in i:
+#                 i = i.replace("!", "@@@") + " @@@"
                 
-            elif "+" in i:
-                i = i.replace("+","@@@") + " @@@"
-            d.append(i)
-    if len(d)<1:
-        return depois
-    return d
+#             elif "+" in i:
+#                 i = i.replace("+","@@@") + " @@@"
+#             d.append(i)
+#     if len(d)<1:
+#         return depois
+#     return d
 
-f = negritar(a,b)
-print(f)
+# f = negritar(a,b)
+# print(f)

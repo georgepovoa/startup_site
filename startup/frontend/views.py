@@ -11,6 +11,14 @@ import rest_framework
 from api.models import User, UserProfile, q_c_q, Anexo2
 import json
 import difflib
+from pymongo import MongoClient
+client = MongoClient('mongodb+srv://georgepovoa12:asdasd12@cluster0.y0ias.mongodb.net/cluster0?retryWrites=true&w=majority')
+db = client['CF88']
+col = db["Lei"]
+
+
+
+
 
 # Create your views here.
 
@@ -194,7 +202,7 @@ def questao(request, *args, **kwargs):
     if request.method == 'POST':
         form = PostResposta(request.POST)
         if True:
-            resposta_user = request.POST["resposta_user"]
+            resposta_user = request.POST["select"]
             print(resposta_user, request.user)
             resultado = resposta_user == gabarito
             print(resultado, resposta_user, gabarito)
@@ -342,3 +350,9 @@ def profile(request):
 
 def homepage(request):
     return render(request,template_name="frontend/homepage.html")
+
+def todo(request):
+    teste = col.find({'_id':10}).limit(3)
+    for i in teste:
+        print(i)
+    return render(request,template_name="frontend/todo.html")

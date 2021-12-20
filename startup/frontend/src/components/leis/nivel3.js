@@ -17,7 +17,7 @@ class Nivel3 extends React.Component {
         super(props);
 
         this.state = {
-            nivel4: Nivel_4_lista,
+            nivel4: null,
 
 
             isOpen: false,
@@ -25,17 +25,25 @@ class Nivel3 extends React.Component {
         }
     }
     async componentDidMount() {
-        // const response = await axios.get('/api/nivel4')
+        var lista_recebidos = this.props.lista_de_subordinados
 
-        // this.setState({ nivel4: response.data })
+        if (lista_recebidos.constructor === Array){
 
 
+        var nivel4 = []
 
-    }
+        lista_recebidos.map(async i => {
+            var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+            nivel4.push(subordinado.data[0])
+        })
+
+
+        this.setState({ nivel4: nivel4 })
+
+    }}
 
     render() {
         const { nivel4, isOpen } = this.state;
-        const lista_de_nivel4 = Object.values(nivel4)
 
         const url = Object.values(this.props.custom_list)
         const id_custom_view = url
@@ -45,7 +53,7 @@ class Nivel3 extends React.Component {
         var tem_questao = false
         if (String(lista_custom_filter_questao_prep) !== "undefined") {
             lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.nivel3 == this.props.id_nivel3 && i.nivel3 !== "" && i.nivel4 === "")
-            if(lista_custom_filter_questao.length>0){tem_questao=true}
+            if (lista_custom_filter_questao.length > 0) { tem_questao = true }
         }
 
         const user = this.props.current_user
@@ -54,28 +62,19 @@ class Nivel3 extends React.Component {
         if (this.props.aberto) {
             return (<div className="nivel3">
 
-                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_nivel3} {tem_questao===true && <p>...</p>}</p>
-
-                {/* {lista_de_nivel4.map(itens => {
-                    if (this.props.id_nivel3 == itens.nivel3) {
-                        return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens.id} />
-                    }
-                })} */}
+                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_nivel3} {tem_questao === true && <p>...</p>}</p>
 
                 {lista_custom_filter_questao.map(i => {
                     if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto = {isOpen}></Questoes>
+                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen}></Questoes>
                     }
                 })}
 
-
-                {lista_de_nivel4.filter(i => lista_custom_filter_nivel4.includes(i.id)).map(itens => {
-                    if (this.props.id_nivel3 == itens.nivel3 && itens.nivel3 !== '') {
-                        return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens.id} custom_list={id_custom_view} current_user={this.props.current_user} />
-                    }
-                })}
-
-
+                {nivel4 ? nivel4.sort(function (a, b) {
+                    return parseFloat(a._id) - parseFloat(b._id);
+                }).map(itens => {
+                        return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} />
+                }):<div></div>}
 
             </div>
             )

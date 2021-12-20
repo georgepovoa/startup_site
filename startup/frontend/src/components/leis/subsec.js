@@ -18,27 +18,30 @@ class SubSec extends React.Component {
     this.state = {
       //subSec : [],
       isOpen: false,
-      artigos: Artigos_lista,
+      artigos: [],
     }
   }
   async componentDidMount() {
-    //    const response = await api.get('subsec')
+    var lista_recebidos = this.props.lista_de_subordinados
 
-    //    this.setState({subSec:response.data})
-    // const resposta = await axios.get('/api/artigo')
 
-    // this.setState({ artigos: resposta.data })
+    var artigo = []
 
+    lista_recebidos.map(async i => {
+      var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+      artigo.push(subordinado.data[0])
+    })
+
+
+    this.setState({ artigos: artigo })
   }
 
   render() {
     const { artigos, isOpen } = this.state;
-    const lista_de_artigos = Object.values(artigos)
 
     const url = Object.values(this.props.custom_list)
     const id_custom_view = url
     const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
-
 
     const user = this.props.current_user
     var lista_custom_filter_questao = []
@@ -47,12 +50,12 @@ class SubSec extends React.Component {
     const lista_custom_filter_questao_prep = data_q[user]
     if (String(lista_custom_filter_questao_prep) !== "undefined") {
       lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.subsecao == this.props.id_subsec && i.subsecao !== "")
-      if(lista_custom_filter_questao.length>0){tem_questao=true}
+      if (lista_custom_filter_questao.length > 0) { tem_questao = true }
     }
     if (this.props.aberto) {
       return (<div className="subsec">
 
-        <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto} - ID {this.props.id_subsec} {tem_questao===true && <p>...</p>}</p>
+        <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto} - ID {this.props.id_subsec} {tem_questao === true && <p>...</p>}</p>
 
         {/* {lista_de_artigos.map(itens => {
           if (this.props.id_subsec === String(parseInt(itens.subsec))) {
@@ -60,16 +63,18 @@ class SubSec extends React.Component {
           }
 
         })} */}
-         {lista_custom_filter_questao.map(i => {
-                    if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto = {isOpen}></Questoes>
-                    }
-                })}
-
-        {lista_de_artigos.filter(i => lista_custom_filter_artigo.includes(i.id)).map(itens => {
-          if (this.props.id_subsec == itens.subsec && itens.subsec !== "") {
-            return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens.id} custom_list={id_custom_view} current_user={this.props.current_user} />
+        {lista_custom_filter_questao.map(i => {
+          if (isOpen) {
+            return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen}></Questoes>
           }
+        })}
+
+        {artigos.sort(function (a, b) {
+          return parseFloat(a._id) - parseFloat(b._id);
+        }).map(itens => {
+
+          return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+
 
         })}
 

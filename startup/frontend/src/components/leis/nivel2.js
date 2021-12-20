@@ -16,7 +16,7 @@ class Nivel2 extends React.Component {
         super(props);
 
         this.state = {
-            nivel3: Nivel_3_lista,
+            nivel3: null,
 
 
             isOpen: false,
@@ -24,18 +24,29 @@ class Nivel2 extends React.Component {
         }
     }
     async componentDidMount() {
-        //const response = await axios.get('/api/nivel3')
+        var lista_recebidos = this.props.lista_de_subordinados
 
-        //this.setState({ nivel3: response.data })
+        if (lista_recebidos.constructor === Array) {
+
+
+            var nivel3 = []
+
+            lista_recebidos.map(async i => {
+                var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+                nivel3.push(subordinado.data[0])
+            })
+
+
+            this.setState({ nivel3: nivel3 })
+        }
 
 
     }
 
     render() {
         const { nivel3, isOpen } = this.state;
-        const lista_de_nivel3 = Object.values(nivel3)
-
         const url = Object.values(this.props.custom_list)
+
         const id_custom_view = url
         const lista_custom_filter_nivel3 = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].nivel3
 
@@ -47,35 +58,27 @@ class Nivel2 extends React.Component {
         const lista_custom_filter_questao_prep = data_q[user]
         if (String(lista_custom_filter_questao_prep) !== "undefined") {
             lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.nivel2 == this.props.id_nivel2 && i.nivel2 !== "" && i.nivel3 === "")
-            if(lista_custom_filter_questao.length>0){tem_questao = true}
+            if (lista_custom_filter_questao.length > 0) { tem_questao = true }
         }
 
-        
+
 
         if (this.props.aberto) {
             return (<div className="nivel2">
 
-                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto} - ID {this.props.id_nivel2} {tem_questao===true && <p>...</p>}</p>
-                
-                {/* {lista_de_nivel3.map(itens => {
-                    if (this.props.id_nivel2 == itens.nivel2) {
-                        return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens.id} />
-                    }
-                })} */}
+                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto} - ID {this.props.id_nivel2} {tem_questao === true && <p>...</p>}</p>
+
                 {lista_custom_filter_questao.map(i => {
                     if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto = {isOpen}></Questoes>
+                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen}></Questoes>
                     }
                 })}
-
-                {lista_de_nivel3.filter(i => lista_custom_filter_nivel3.includes(i.id)).map(itens => {
-                    if (this.props.id_nivel2 == itens.nivel2 && itens.nivel2 !== '') {
-                        return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens.id} custom_list={id_custom_view} current_user={this.props.current_user} />
-                    }
-                })}
-
-
-
+                {nivel3 ? nivel3.sort(function (a, b) {
+                    return parseFloat(a._id) - parseFloat(b._id);
+                }).map(itens => {
+                    return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                }):<div></div>}
+                
             </div>
             )
         }

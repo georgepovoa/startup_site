@@ -13,7 +13,7 @@ class Lei extends React.Component {
         super(props);
 
         this.state = {
-            titulos: Titulo_lista,
+            titulos: [],
             current_user: "",
 
 
@@ -23,13 +23,15 @@ class Lei extends React.Component {
 
 
     async componentDidMount() {
-        //const response = await axios.get('/api/titulos')
+        const response_api = await axios.get("http://127.0.0.1:3000/titulo")
 
-        //this.setState({titulos:response.data})
 
         const response = await axios.get("/api/current")
 
-        this.setState({ current_user: response.data[0].email })
+        this.setState({
+            current_user: response.data[0].email,
+            titulos: response_api.data
+        })
     }
 
     render() {
@@ -39,11 +41,10 @@ class Lei extends React.Component {
         const url = Object.values(this.props)[2].url
         const id_pv = url.split("/")[2]
         const a = data.lei_personalizada.filter(i => i.id == id_pv)[0].titulo
-        console.log(current_user)
 
         return (<div>
             <nav>
-                <a href="/"><img src="https://www.logomaker.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6khvCBqRBPmxjNwXs1M3EMoAJtliMkhvBq9...Q... "/></a>
+                <a href="/"><img src="https://www.logomaker.com/api/main/images/1j+ojFVDOMkX9Wytexe43D6khvCBqRBPmxjNwXs1M3EMoAJtliMkhvBq9...Q... " /></a>
 
                 <div className="divnav">
                     <a href="/homequestao">Resolver Questoes</a>
@@ -66,9 +67,10 @@ class Lei extends React.Component {
                 </div>
              ) )} */}
 
-            {lista_de_titulos.filter(i => a.includes(i.id)).map((t => (
+            {lista_de_titulos.map((t => (
                 <div className="titulo-class">
-                    <Titulo id_titulo={t.id} key={t.id} texto={t.texto} custom_list={id_pv} current_user={current_user} />
+                    {console.log(t._id, t.subordinado)}
+                    <Titulo id_titulo={t._id} key={t._id} texto={t.texto} custom_list={id_pv} current_user={current_user} lista_de_subordinados={t.subordinado} />
                 </div>
             )))}
         </div>
