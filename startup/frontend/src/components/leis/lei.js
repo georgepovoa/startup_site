@@ -40,7 +40,6 @@ class Lei extends React.Component {
         const lista_de_titulos = Object.values(titulos)
         const url = Object.values(this.props)[2].url
         const id_pv = url.split("/")[2]
-        const a = data.lei_personalizada.filter(i => i.id == id_pv)[0].titulo
 
         return (<div>
             <nav>

@@ -14,8 +14,8 @@ class Secoes extends React.Component {
         super(props);
 
         this.state = {
-            subSec: null,
-            artigos: null,
+            subSec: [],
+            artigos: [],
             isOpen: false,
         }
 
@@ -25,20 +25,24 @@ class Secoes extends React.Component {
 
     async componentDidMount() {
         var lista_recebidos = this.props.lista_de_subordinados
+        var string_list = "lista/{lista_id}?"
 
 
-        var artigo = null
-        var subsecoes = null
+        var artigo = []
+        var subsecoes = []
 
         lista_recebidos.map(async i => {
-            var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+            string_list += "item_ids="+i+"&"
+
+            
+        })
+        var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
             if (subordinado.data[0].tipo == "artigo") {
-                artigo.push(subordinado.data[0])
+                artigo = subordinado.data
             }
             else {
-                subsecoes.push(subordinado.data[0])
+                subsecoes = subordinado.data
             }
-        })
 
 
         this.setState({
@@ -54,8 +58,6 @@ class Secoes extends React.Component {
         const url = Object.values(this.props.custom_list)
 
         const id_custom_view = url
-        const lista_custom_filter_subsecao = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].subsecoes
-        const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
 
         const user = this.props.current_user
         var lista_custom_filter_questao = []
@@ -79,16 +81,11 @@ class Secoes extends React.Component {
                     }
                 })}
 
-                {subSec || artigos ? subSec.sort(function (a, b) {
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
+                {subSec || artigos ? subSec.map(itens => {
                     return <SubSec aberto={isOpen} texto={itens.texto} id_subsec={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
                 }):<div></div>}
 
-                {subSec || artigos ? artigos.sort(function (a, b) {
-                    
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
+                {subSec || artigos ? artigos.map(itens => {
                     return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
                 }):
                 <div></div>}

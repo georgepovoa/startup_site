@@ -1,0 +1,44 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<section class="featured-cadernos">
+
+    <div class="container">
+
+        <h2 class="section-title-cadernos">Cadernos</h2>
+
+        <div class="split">
+            {% for k , v in cadernos.items  %}
+            <a href="/homeuser/{{k}}" class="featured__cadernos">
+
+                <img src="{%static 'images/online-test-color.png'%}" alt="" class="featured__image">
+               
+                <p class="featured__details_cadernos">{{v.nome_caderno}}</p>
+            </a>
+
+            {% endfor %}
+
+            <a href="create-caderno" class="featured__cadernos">
+
+                <img src="{%static 'images/online-test-color.png'%}" alt="" class="featured__image">
+               
+                <p class="featured__details_cadernos">Criar Caderno</p>
+            </a>
+
+            
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+{% endblock content %}

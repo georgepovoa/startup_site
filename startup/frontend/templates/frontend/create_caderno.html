@@ -1,0 +1,20 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+<form method = "post" action = "/create-caderno">
+    {% csrf_token %}
+
+{% for i in recomendados  %}
+
+<input type = "checkbox" name = "t_marcados" value ="{{i.id}}:{{i.subordinado}}" />{{i.texto}} <br/>
+
+{% endfor %}
+<input type = "hidden" name = "marcados_anteriormente" value = "{{marcados}}" />
+
+<input type = "submit" name = "proximo" value = "Prosseguir"/>
+<input type = "submit" name = "voltar" value = "Voltar" onclick="history.back()"/>
+
+{% if ultimo %}
+<input type = "submit" name = "enviar" value = "Criar caderno" />
+{% endif %}
+{% endblock content %}

@@ -17,47 +17,64 @@ class Titulo extends React.Component {
             capitulos: [],
             artigos: [],
             isOpen: false,
+            loading:true,
         }
     }
 
     async componentDidMount() {
-        var lista_recebidos = this.props.lista_de_subordinados
 
-        if ( lista_recebidos.constructor === Array) {
+
+        console.log(this.state.loading + "tt")
+        var lista_recebidos = this.props.lista_de_subordinados
+        var string_list = "lista/{lista_id}?"
+
+        if (lista_recebidos.constructor === Array) {
 
 
             var artigo = []
             var capitulo = []
 
             lista_recebidos.map(async i => {
-                var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-                if (subordinado.data[0].tipo == "artigo") {
-                    artigo.push(subordinado.data)
-                }
-                else {
-                    capitulo.push(subordinado.data)
-                }
+                string_list += "item_ids="+i+"&"
+
+
+               
             })
+            console.log(string_list)
+            var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
+            console.log(subordinado)
+            console.log(subordinado.data)
+            console.log(subordinado.data[0])
+            if (subordinado.data[0].tipo == "artigo") {
+                artigo = subordinado.data
+            }
+            else {
+                capitulo = subordinado.data
+            }
+            console.log(capitulo)
+            console.log(artigo)
 
 
             this.setState({
                 capitulos: capitulo,
-                artigos: artigo
+                artigos: artigo,
+                loading:false
             })
         }
+        console.log(this.state.loading + "tt")
+
 
     }
 
     render() {
 
+        
         const { capitulos, isOpen, artigos } = this.state;
 
 
         const url = Object.values(this.props.custom_list)
 
         const id_custom_view = url
-        const lista_custom_filter_capitulo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].capitulos
-        const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
 
         return (<div className="titulo">
             <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto}</p>
@@ -69,12 +86,13 @@ class Titulo extends React.Component {
 
 
             })} */}
-            {capitulos.sort(function (a, b) {
-                return parseFloat(a[0]._id) - parseFloat(b[0]._id);
-            }).map(itens => {
+            {capitulos.map(itens => {
+                console.log("funcao dentro do map")
+                console.log(itens)
+                console.log(capitulos)
 
 
-                return <Capitulos id_capitulo={itens[0]._id} texto={itens[0].texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens[0].subordinado}></Capitulos>
+                return <Capitulos id_capitulo={itens._id} texto={itens.texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado}></Capitulos>
 
 
             })}
@@ -87,10 +105,8 @@ class Titulo extends React.Component {
                 }
             })} */}
 
-            {artigos.sort(function (a, b) {
-                return parseFloat(a[0]._id) - parseFloat(b[0]._id);
-            }).map(itens => {
-                return <Artigo aberto={isOpen} texto={itens[0].texto} id_artigo={itens[0]._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens[0].subordinado} ></Artigo >
+            {artigos.map(itens => {
+                return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} ></Artigo >
 
             })}
 

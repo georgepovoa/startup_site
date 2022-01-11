@@ -26,6 +26,10 @@ class Nivel3 extends React.Component {
     }
     async componentDidMount() {
         var lista_recebidos = this.props.lista_de_subordinados
+        var string_list = "lista/{lista_id}?"
+
+        string_list += "item_ids="+i+"&"
+
 
         if (lista_recebidos.constructor === Array){
 
@@ -33,9 +37,12 @@ class Nivel3 extends React.Component {
         var nivel4 = []
 
         lista_recebidos.map(async i => {
-            var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-            nivel4.push(subordinado.data[0])
+            string_list += "item_ids="+i+"&"
+
+
         })
+        var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
+        nivel4.push(subordinado.data)
 
 
         this.setState({ nivel4: nivel4 })
@@ -44,10 +51,10 @@ class Nivel3 extends React.Component {
 
     render() {
         const { nivel4, isOpen } = this.state;
+        const user = this.props.current_user
 
         const url = Object.values(this.props.custom_list)
         const id_custom_view = url
-        const lista_custom_filter_nivel4 = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].nivel4
 
         const lista_custom_filter_questao_prep = data_q[user]
         var tem_questao = false
@@ -56,7 +63,6 @@ class Nivel3 extends React.Component {
             if (lista_custom_filter_questao.length > 0) { tem_questao = true }
         }
 
-        const user = this.props.current_user
         var lista_custom_filter_questao = []
 
         if (this.props.aberto) {
@@ -70,9 +76,7 @@ class Nivel3 extends React.Component {
                     }
                 })}
 
-                {nivel4 ? nivel4.sort(function (a, b) {
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
+                {nivel4 ? nivel4.map(itens => {
                         return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} />
                 }):<div></div>}
 

@@ -35,28 +35,31 @@
 
         <img class = profile-side-menu src="{%static 'images/exam.png'%}"> 
         
-            
-                <div class="item-menu">
-                <a class= "link-side-menu" href="/feitas">
-                    <img class = "side-menu-item" src="{%static 'images/pc.png'%}"/>
-                    <p class="hide"> Questoes Feitas</p>
-                </a>
-            </div>
-            
-
-            
-            <div class="item-menu">
-
-                <a class= "link-side-menu" href="/lei/0">
-                    <img class = "side-menu-item" src="{%static 'images/pc.png'%}"/>
-                    <p class="hide"> Lei</p>
-                </a>
-            </div>
+           
             
             
            
                 
                 {% if user.is_authenticated %}
+
+                <div class="item-menu">
+
+                    <a class= "link-side-menu" href="/lei/0">
+                        <img class = "side-menu-item" src="{%static 'images/pc.png'%}"/>
+                        <p class="hide"> Lei</p>
+                    </a>
+                </div>
+
+
+                <div class="item-menu">
+                    <a class= "link-side-menu" href="/homequestao">
+                        <img class = "side-menu-item" src="{%static 'images/pc.png'%}"/>
+                        <p class="hide"> Questoes</p>
+                    </a>
+                </div>
+
+
+
                 <div class="item-menu">
             <a class= "link-side-menu" href = "/profile">
                 <img class = "side-menu-item" src="{%static 'images/pc.png'%}"/>
@@ -69,6 +72,7 @@
                 <p class="hide">Logout</p>
             </a>
             </div>
+            
 
 
                 

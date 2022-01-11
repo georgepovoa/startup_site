@@ -25,6 +25,10 @@ class Nivel2 extends React.Component {
     }
     async componentDidMount() {
         var lista_recebidos = this.props.lista_de_subordinados
+        var string_list = "lista/{lista_id}?"
+
+
+
 
         if (lista_recebidos.constructor === Array) {
 
@@ -32,9 +36,11 @@ class Nivel2 extends React.Component {
             var nivel3 = []
 
             lista_recebidos.map(async i => {
-                var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-                nivel3.push(subordinado.data[0])
+                string_list += "item_ids="+i+"&"
+                
             })
+            var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
+            nivel3 = subordinado.data
 
 
             this.setState({ nivel3: nivel3 })
@@ -48,7 +54,6 @@ class Nivel2 extends React.Component {
         const url = Object.values(this.props.custom_list)
 
         const id_custom_view = url
-        const lista_custom_filter_nivel3 = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].nivel3
 
 
         const user = this.props.current_user
@@ -73,9 +78,7 @@ class Nivel2 extends React.Component {
                         return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen}></Questoes>
                     }
                 })}
-                {nivel3 ? nivel3.sort(function (a, b) {
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
+                {nivel3 ? nivel3.map(itens => {
                     return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
                 }):<div></div>}
                 

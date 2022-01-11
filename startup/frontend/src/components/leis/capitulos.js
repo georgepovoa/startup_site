@@ -18,40 +18,52 @@ class Capitulo extends React.Component {
             artigos: null,
 
             isOpen: false,
+            loading: true,
 
         }
     }
     async componentDidMount() {
-
+       
+        console.log(this.state.loading + "cpt")
 
         var lista_recebidos = this.props.lista_de_subordinados
+        var string_list = "lista/{lista_id}?"
+
 
 
         var artigo = []
         var secao = []
 
         lista_recebidos.map(async i => {
-            var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-            if (subordinado.data[0].tipo == "artigo") {
-                artigo.push(subordinado.data[0])
-            }
-            else {
-                secao.push(subordinado.data[0])
-            }
+            string_list += "item_ids="+i+"&"
         })
-        
+        var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
+        if (subordinado.data[0].tipo == "artigo") {
+            artigo = subordinado.data
+        }
+        else {
+            secao = subordinado.data
+        }
 
-        this.setState({ secoes: secao,
-            artigos: artigo })
+
+        this.setState({
+            secoes: secao,
+            artigos: artigo,
+            loading: false
+        })
+
+        document.body.style.cursor = 'default'
+
+        console.log(this.state.loading + "cpt")
+
     }
 
     render() {
-        const { secoes, isOpen, artigos } = this.state;
         
+        const { secoes, isOpen, artigos } = this.state;
+
         const url = Object.values(this.props.custom_list)
         const id_custom_view = url
-        const lista_custom_filter_secao = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].secoes
-        const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
 
         const user = this.props.current_user
         var lista_custom_filter_questao = []
@@ -65,31 +77,27 @@ class Capitulo extends React.Component {
         if (this.props.aberto) {
 
             return (
-            <div className="capitulo">
+                <div className="capitulo">
 
-                <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_capitulo}{tem_questao === true && <p>...</p>}</p>
-                
+                    <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_capitulo}{tem_questao === true && <p>...</p>}</p>
 
-                {lista_custom_filter_questao.map(i => {
-                    if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen} ></Questoes>
-                    }
-                })}
 
-                {secoes || artigos ? secoes.sort(function (a, b) {
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
-                    return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
-                }): <p>Loading</p>}
-                
-               
-                {secoes || artigos ?artigos.sort(function (a, b) {
-                    return parseFloat(a._id) - parseFloat(b._id);
-                }).map(itens => {
-                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
-                }) :<p>Loading...</p> }
-                
-            </div>
+                    {lista_custom_filter_questao.map(i => {
+                        if (isOpen) {
+                            return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen} ></Questoes>
+                        }
+                    })}
+
+                    {secoes || artigos ? secoes.map(itens => {
+                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                    }) : <p>Loading</p>}
+
+
+                    {secoes || artigos ? artigos.map(itens => {
+                        return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                    }) : <p>Loading...</p>}
+
+                </div>
             )
         }
         else {

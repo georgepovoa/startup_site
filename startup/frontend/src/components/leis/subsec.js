@@ -23,14 +23,19 @@ class SubSec extends React.Component {
   }
   async componentDidMount() {
     var lista_recebidos = this.props.lista_de_subordinados
+    string_list += "item_ids="+i+"&"
+
 
 
     var artigo = []
 
     lista_recebidos.map(async i => {
-      var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-      artigo.push(subordinado.data[0])
+      string_list += "item_ids="+i+"&"
+
+      
     })
+    var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
+      artigo.push(subordinado.data)
 
 
     this.setState({ artigos: artigo })
@@ -41,7 +46,6 @@ class SubSec extends React.Component {
 
     const url = Object.values(this.props.custom_list)
     const id_custom_view = url
-    const lista_custom_filter_artigo = data.lei_personalizada.filter(i => i.id == id_custom_view)[0].artigos
 
     const user = this.props.current_user
     var lista_custom_filter_questao = []
