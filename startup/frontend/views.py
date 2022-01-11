@@ -108,49 +108,30 @@ def submit_q_e(request, *args, **kwargs):
     banca = request.POST["banca"]
     ano = request.POST["ano"]
     orgao = request.POST["orgao"]
+    loc_lei = request.POST["loc_lei"]
 
     resultado = bool(request.POST["resultado"])
 
     texto_item = request.POST["texto_item"]
-
     
     # esse for é para colocar em maiusculo as palavras que não existiam antes
     # Necessário aprimorar para não perceber só palavras novas
     correcao = negritar(texto_item,correcao)
 
-
     # Salva ou caso não exista, cria uma nova.
-
-    try:
-        lista_antes = jsonDec.decode(usuario.questoes_feitas)
-        listIWantToStore = [[id, resultado, correcao]] + lista_antes
-    except:
-        listIWantToStore = [[id, resultado, correcao]]
-
-    usuario.questoes_feitas = json.dumps(listIWantToStore)
-    usuario.save(update_fields=['questoes_feitas'])
-    print(usuario.questoes_feitas)
+    
 
     # Salva no data_q.JSON
     y={}
-    y[str(id)] = {
-    "texto_item":' '.join(correcao),
-    "cargo":cargo,
-    "ano":ano,
-    "cargo":cargo,
-    "banca":banca,
-    "orgao":orgao,
-    "titulo":0,
-     "capitulo":'',
-     "artigo": 0,
-     "secao":'',
-     "subsecao":'',
-     "nivel2":0,
-     "nivel3":'',
-     "nivel4":''
-     
+    y = {
+    "user":str(request.user),
+    "id_questao": id,
+    "id_lei":loc_lei,
+    "correcao":' '.join(correcao),
+    
     }
-    write_json_q(str(request.user),y)
+    requests.put("http://localhost:3000/adicionarquestao",params=y)
+    
 
 
     return redirect('questao')
@@ -164,39 +145,31 @@ def questao(request, *args, **kwargs):
         return redirect("/accounts/login")
 
     # Aqui pego as questões que o usuario já fez
-    lista_do_usuario = []
+    
+    api_usuario_questoes = requests.get("http://localhost:3000/user/{}".format(request.user)).json()
+    lista_do_usuario = api_usuario_questoes["questoes_feitas"]
+    lista_do_usuario = "&q=".join(str(x) for x in lista_do_usuario)
+    print(lista_do_usuario)
 
-
-    try:   
-        usuario = UserProfile.objects.get(user = request.user)
-        try:
-            for i in jsonDec.decode(usuario.questoes_feitas):
-                lista_do_usuario.append(i[0])
-
-        except Exception as e:
-            print(e)
-
-    except Exception as e:
-        print(e)
 ## Pegar infos da questão ##
-    data_all = q_c_q.objects.all()
+    
 
 #e qui eu verifico se o usuário ainda não fez a questão
-    for objeto in data_all:
-        if objeto.id not in lista_do_usuario:
-            data = objeto
+    
+    data = requests.get("http://localhost:3000/questoes/cf88/uma?q="+lista_do_usuario).json()
 
-    id = data.id
-    assunto = data.assunto
-    ano = data.ano
-    banca = data.banca
-    orgao = data.orgao
-    cargo = data.cargo
-    questao = data.questao
-    tipo = data.tipo
-    gabarito = data.gabarito
-    comando = data.comando
-    texto_item = data.texto_item.strip()
+    id = data["_id"]
+    ano = data["ano"]
+    banca = data["banca"]
+    orgao = data["orgao"]
+    cargo = data["cargo"]
+    tipo = data["tipo_questao"]
+    gabarito = data["gabarito"]
+    comando = data["comando"]
+    texto_item = data["texto_item"].strip()
+    loc_lei = data["loc_lei"]
+
+    lei_txt = requests.get("http://localhost:3000/{}".format(id)).json()[0]["texto"]
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -215,41 +188,30 @@ def questao(request, *args, **kwargs):
                                   'current': request.user,
                                   'form': AnexoForm(),
                                   'id': id,
-                                  'assunto': assunto,
                                   'ano': ano,
                                   'banca': banca,
                                   'orgao': orgao,
                                   'cargo': cargo,
-                                  'questao': questao,
                                   'tipo': tipo,
                                   'gabarito': gabarito,
                                   'comando': comando,
                                   'texto_item': texto_item,
                                   'resultado': resultado,
-                                  'respondido': True
+                                  "loc_lei":loc_lei,
+                                  'respondido': True,
+                                  "lei_txt":lei_txt
                               }) 
 # Esse else é para Adicionar a questao certa que não precisa de correção do aluno
 # só o texto_item     
             else:
                 #vai precisar mudar para encaixar o anexo caso necessário
-                try:
-                    # tenta puxar lista de questoes já feitas
-                    
-                    lista_antes = jsonDec.decode(usuario.questoes_feitas)
-                    listIWantToStore = [[id, resultado, texto_item]] + lista_antes
-                except:
-                    #se não conseguir cria uma
-                    listIWantToStore = [[id, resultado, texto_item]]
-                #salvar as alterações no usuário
-                usuario.questoes_feitas = json.dumps(listIWantToStore)
-                usuario.save(update_fields=['questoes_feitas'])
+                
                 #renderiza página com possível anexo
                 return render(request, 'frontend/questao.html',
                           {
                               'current': request.user,
                               'form': AnexoForm(),
                               'id': id,
-                              'assunto': assunto,
                               'ano': ano,
                               'banca': banca,
                               'orgao': orgao,
@@ -260,7 +222,9 @@ def questao(request, *args, **kwargs):
                               'comando': comando,
                               'texto_item': texto_item.strip(),
                               'resultado': resultado,
-                              'respondido': True
+                              "loc_lei":loc_lei,
+                              'respondido': True,
+                              "lei_txt":lei_txt
 
                           })
 # ese return é o primeiro return, sem nenhum post
@@ -269,17 +233,17 @@ def questao(request, *args, **kwargs):
                       'current': request.user,
                       'form': PostResposta(),
                       'id': id,
-                      'assunto': assunto,
                       'ano': ano,
                       'banca': banca,
                       'orgao': orgao,
                       'cargo': cargo,
-                      'questao': questao,
                       'tipo': tipo,
                       'gabarito': gabarito,
                       'comando': comando,
                       'texto_item': texto_item.strip(),
-                      'respondido': False
+                      "loc_lei":loc_lei,
+                      'respondido': False,
+                      "lei_txt":lei_txt
                   }
                   )
 

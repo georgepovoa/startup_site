@@ -1,11 +1,6 @@
 import React from 'react';
-import Capitulos from './capitulos';
-import ReactDOM from 'react-dom';
 import Titulo from './titulo';
 import axios from 'axios';
-import { Titulo_lista } from "./listas"
-import { useParams } from "react-router";
-import * as data from "./data.json";
 
 class Lei extends React.Component {
     constructor(props) {

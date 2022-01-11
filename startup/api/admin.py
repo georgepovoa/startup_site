@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import ApiTitulos , UserProfile,User
+from .models import  UserProfile,User
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-admin.site.register(ApiTitulos)
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile

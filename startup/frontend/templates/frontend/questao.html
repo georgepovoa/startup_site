@@ -1,6 +1,7 @@
 {% extends 'frontend/base.html' %}
 {% block content %}
     <div class="homeQuestao">
+        <div class = "texto da lei">{{lei_txt}}</div>
 
         <div class="info-bar">
             <p class = "cargo">( {{cargo}}-</p>
@@ -73,6 +74,7 @@
                 <input type="hidden" value="{{cargo}}" name = "cargo" />
                 <input type="hidden" value="{{banca}}" name = "banca" />
                 <input type="hidden" value="{{orgao}}" name = "orgao" />
+                <input type="hidden" value="{{loc_lei}}" name = "loc_lei" />
 
                 <br/>
                 <input type="submit" value="Enviar" />

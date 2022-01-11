@@ -4,9 +4,7 @@ import Nivel4 from './nivel4';
 
 import axios from 'axios';
 
-import { Nivel_4_lista } from './listas'
 
-import * as data from "./data.json";
 import * as data_q from "./data_questoes.json"
 import Questoes from './questoes';
 

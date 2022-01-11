@@ -1,8 +1,6 @@
 import React from 'react';
 import Capitulos from './capitulos';
-import ReactDOM from 'react-dom';
 import Artigo from './artigos';
-import * as data from "./data.json";
 
 
 

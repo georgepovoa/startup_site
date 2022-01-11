@@ -1,49 +1,7 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import ApiTitulos,Artigo,Capitulos,Secao,Subsecao,Nivel2,Nivel3,Nivel4, q_c_q
+from .models import q_c_q
 from api.models import User, UserProfile
-
-
-
-class TituloSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ApiTitulos
-        fields =('id','lei','texto')
-
-class CapitulosSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Capitulos
-        fields =('id','lei','titulo','texto')
-
-class SecaoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Secao
-        fields =('id','lei','titulo','capitulo','texto')
-
-class SubsecaoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subsecao
-        fields =('id','lei','titulo','capitulo','sec','texto')
-
-class ArtigoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Artigo
-        fields =('id','lei','titulo','capitulo','sec','subsec','texto','endereco')
-
-class Nivel2Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Nivel2
-        fields =('id','lei','titulo','capitulo','sec','subsec','artigo','texto','endereco')
-
-class Nivel3Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Nivel3
-        fields =('id','lei','titulo','capitulo','sec','subsec','artigo','nivel2','texto','endereco')
-
-class Nivel4Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Nivel4
-        fields =('id','lei','titulo','capitulo','sec','subsec','artigo','nivel2','nivel3','texto','endereco')
 
 class questaoSerializer(serializers.ModelSerializer):
     class Meta:

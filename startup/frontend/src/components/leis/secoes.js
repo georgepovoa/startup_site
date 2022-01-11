@@ -3,8 +3,6 @@ import React from 'react';
 import SubSec from './subsec';
 import Artigo from './artigos';
 import axios from 'axios';
-import { Artigos_lista, Subsecao_lista } from './listas'
-import * as data from "./data.json";
 import * as data_q from "./data_questoes.json"
 import Questoes from './questoes';
 

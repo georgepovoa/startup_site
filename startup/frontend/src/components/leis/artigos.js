@@ -1,10 +1,8 @@
 import React from 'react';
 import Nivel2 from './nivel2';
 import axios from 'axios';
-import {Nivel_2_lista} from './listas'
 import Questoes from './questoes';
 
-import * as data from "./data.json";
 import * as data_q from "./data_questoes.json"
 
 
