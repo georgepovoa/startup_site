@@ -8,7 +8,7 @@ from .forms import NewUserForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 import rest_framework
-from api.models import User, UserProfile, q_c_q, Anexo2
+from api.models import User, UserProfile, Anexo2
 import json
 import difflib
 import requests
@@ -51,14 +51,6 @@ class AnexoForm(forms.ModelForm):
 def index(request, *args, **kwargs):
     return render(request, 'frontend/index.html')
 
-
-def questoes_feitas(request, *args, **kwargs):
-    usuario = UserProfile.objects.get(user = request.user)
-    return render(request, 'frontend/questoes_feitas.html',{
-        'current' : request.user,
-        'questoes_feitas':jsonDec.decode(usuario.questoes_feitas)
-
-    })
 
 
 def submit_q_e(request, *args, **kwargs):
@@ -309,9 +301,7 @@ def profile(request):
     usuario = UserProfile.objects.get(user = request.user)
 
     if request.method == "GET":
-        return render(request,template_name="frontend/profile.html",context = {
-        'questoes_feitas':jsonDec.decode(usuario.questoes_feitas)
-        })
+        return render(request,template_name="frontend/profile.html")
 
 def homepage(request):
     if request.method == "POST":
@@ -351,31 +341,36 @@ def tela_profile_picker(request):
 
 
 def create_caderno(request):
-    if request.method == "POST":
+
+    # Mas Esse vai para a próxima lista
+    if request.method == "POST" and request.POST["submit"] == "Prosseguir":
         marcados = []
         marcados_anteriormente = request.POST["marcados_anteriormente"]
         recomendado = []
         recomendado_formatado = []
         recomendado_api = []
         is_ultimo = False
+
         subordinados = request.POST.getlist('t_marcados')
         for i in subordinados:
             marcados.append(i.split(":")[0])
             recomendado.append(i.split(":")[1])
 
-        if list(recomendado) != ["sem_subordinado"]:
-            for i in list(recomendado):
-                for j in json.loads(i):
-                    recomendado_formatado.append(j)
-        else:
-            is_ultimo = True
-
-        
-        
-        for i in recomendado_formatado:
+        if list(recomendado) != ["sem_subordinado"] :
             
-            recomendado_api.append(requests.get("http://localhost:3000/{}".format(i)).json())
+            for i in list(recomendado):
+                if i != "sem_subordinado":
+                
+                    for j in json.loads(i):
+                        recomendado_formatado.append(j)
+        
+        if recomendado_formatado == []:
+            is_ultimo = True 
 
+        
+        
+        payload = {"item_ids":recomendado_formatado}
+        recomendado_api.append(requests.get("http://localhost:3000/lista/{lista_id}",params=payload).json())
         old_key = "_id"
         new_key = "id"
         for i in recomendado_api:
@@ -386,23 +381,32 @@ def create_caderno(request):
 
         marcados += marcados_anteriormente.split(',')
 
-       
-
-        
-
-        print("marcados {}".format(sorted(marcados)))
-        
-        
-                
-
-
         return render(request,template_name="frontend/create_caderno.html",context={
             "marcados" : ",".join(marcados),
             "recomendados":recomendado_api,
             "ultimo":is_ultimo
 
         })
+    
+    if request.method == "POST" and request.POST["submit"] == "Criar caderno":
+        print(request.user)
+        cadernos_dict = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+        new_id = int(list(cadernos_dict["cadernos"])[-1]) + 1
+        list_of_ids = request.POST["marcados_anteriormente"].split(",")
+        while "" in list_of_ids:
+            list_of_ids.remove("")
+        bancas = []
+        cargos = []
+        list_of_ids = list(map(int, list_of_ids))
+        ind_lei_str = '"indice_lei":{}'.format(list_of_ids)
+        bancas_str = '"bancas":{}'.format(bancas)
+        cargos_str = '"cargos":{}'.format(cargos)
+        completo = "{" + ind_lei_str + ","+ bancas_str +","+cargos_str +"}"        
+        requests.put("http://localhost:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
         
+        return redirect("create_caderno")
+
+
     user = request.user
     if user.is_authenticated:
         response =requests.get("http://localhost:3000/titulo").json()

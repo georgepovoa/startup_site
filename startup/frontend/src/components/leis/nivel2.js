@@ -77,7 +77,7 @@ class Nivel2 extends React.Component {
                     }
                 })}
                 {nivel3 ? nivel3.map(itens => {
-                    return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                    return <Nivel3 aberto={isOpen} texto={itens.texto} id_nivel3={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
                 }):<div></div>}
                 
             </div>

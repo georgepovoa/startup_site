@@ -80,11 +80,11 @@ class Secoes extends React.Component {
                 })}
 
                 {subSec || artigos ? subSec.map(itens => {
-                    return <SubSec aberto={isOpen} texto={itens.texto} id_subsec={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                    return <SubSec aberto={isOpen} texto={itens.texto} id_subsec={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
                 }):<div></div>}
 
                 {subSec || artigos ? artigos.map(itens => {
-                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                    return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
                 }):
                 <div></div>}
                 

@@ -17,13 +17,12 @@ class Capitulo extends React.Component {
 
             isOpen: false,
             loading: true,
+            questoes:[],
 
         }
     }
     async componentDidMount() {
        
-        console.log(this.state.loading + "cpt")
-
         var lista_recebidos = this.props.lista_de_subordinados
         var string_list = "lista/{lista_id}?"
 
@@ -52,7 +51,7 @@ class Capitulo extends React.Component {
 
         document.body.style.cursor = 'default'
 
-        console.log(this.state.loading + "cpt")
+        
 
     }
 
@@ -72,6 +71,9 @@ class Capitulo extends React.Component {
             lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.capitulo == this.props.id_capitulo && i.capitulo !== "" && i.secao === "" && i.artigo === "")
             if (lista_custom_filter_questao.length > 0) { tem_questao = true }
         }
+        if (this.props.id_alteradas.includes(this.props.id_capitulo)){
+            console.log("TEM MATCH CAPITULO")
+        }
         if (this.props.aberto) {
 
             return (
@@ -87,12 +89,12 @@ class Capitulo extends React.Component {
                     })}
 
                     {secoes || artigos ? secoes.map(itens => {
-                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
                     }) : <p>Loading</p>}
 
 
                     {secoes || artigos ? artigos.map(itens => {
-                        return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+                        return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
                     }) : <p>Loading...</p>}
 
                 </div>

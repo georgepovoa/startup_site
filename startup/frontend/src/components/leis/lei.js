@@ -2,6 +2,7 @@ import React from 'react';
 import Titulo from './titulo';
 import axios from 'axios';
 
+
 class Lei extends React.Component {
     constructor(props) {
 
@@ -10,6 +11,7 @@ class Lei extends React.Component {
         this.state = {
             titulos: [],
             current_user: "",
+            lei_id_alteradas:[],
 
 
         }
@@ -23,18 +25,22 @@ class Lei extends React.Component {
 
         const response = await axios.get("/api/current")
 
+        const response_questoes = await axios.get("http://localhost:3000/get_all_q_user/"+response.data[0].email)
+
         this.setState({
             current_user: response.data[0].email,
-            titulos: response_api.data
+            titulos: response_api.data,
+            lei_id_alteradas:response_questoes.data
         })
     }
 
     render() {
-        const { titulos, current_user } = this.state;
+        const { titulos, current_user,lei_id_alteradas } = this.state;
 
         const lista_de_titulos = Object.values(titulos)
         const url = Object.values(this.props)[2].url
         const id_pv = url.split("/")[2]
+        console.log(lei_id_alteradas)
 
         return (<div>
             <nav>
@@ -53,20 +59,14 @@ class Lei extends React.Component {
             </nav>
             <h1>{id_pv}</h1>
             <h1>{current_user}</h1>
-
-
-            {/* {lista_de_titulos.map(t =>(
-                <div className = "titulo-class">
-                    <Titulo id_titulo = {t.id} key = {t.id} texto = {t.texto}/>
-                </div>
-             ) )} */}
-
+            
             {lista_de_titulos.map((t => (
                 <div className="titulo-class">
                     {console.log(t._id, t.subordinado)}
-                    <Titulo id_titulo={t._id} key={t._id} texto={t.texto} custom_list={id_pv} current_user={current_user} lista_de_subordinados={t.subordinado} />
+                    <Titulo id_titulo={t._id} key={t._id} texto={t.texto} custom_list={id_pv} current_user={current_user} lista_de_subordinados={t.subordinado} id_alteradas = {lei_id_alteradas}/>
                 </div>
             )))}
+
         </div>
         )
 

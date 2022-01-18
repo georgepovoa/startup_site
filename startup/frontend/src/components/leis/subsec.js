@@ -73,7 +73,7 @@ class SubSec extends React.Component {
           return parseFloat(a._id) - parseFloat(b._id);
         }).map(itens => {
 
-          return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} />
+          return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
 
 
         })}

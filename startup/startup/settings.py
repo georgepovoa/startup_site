@@ -80,12 +80,14 @@ WSGI_APPLICATION = 'startup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'startup',
-        'USER' : 'root',
-        'HOST':'localhost',
-        'PORT':'3306',
-        'PASSWORD':'asdasd12'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'startup',
+        # 'USER' : 'root',
+        # 'HOST':'localhost',
+        # 'PORT':'3306',
+        # 'PASSWORD':'asdasd12'
 
     }
 }
@@ -135,3 +137,5 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/profile-picker'
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240

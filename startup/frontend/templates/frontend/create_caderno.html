@@ -6,15 +6,18 @@
 
 {% for i in recomendados  %}
 
-<input type = "checkbox" name = "t_marcados" value ="{{i.id}}:{{i.subordinado}}" />{{i.texto}} <br/>
+<input type = "checkbox" name = "t_marcados" value ="{{i.id}}:{{i.subordinado}}" checked />{{i.texto}} <br/>
 
 {% endfor %}
 <input type = "hidden" name = "marcados_anteriormente" value = "{{marcados}}" />
+<input type = "hidden" name = "nome_caderno" value = "Caderno Criado" />
+<input type = "hidden" name = "leis_caderno" value = "cf88" />
 
-<input type = "submit" name = "proximo" value = "Prosseguir"/>
-<input type = "submit" name = "voltar" value = "Voltar" onclick="history.back()"/>
+<input type = "submit" name = "submit" value = "Prosseguir"/>
+<input type = "submit" name = "submit" value = "Voltar" onclick="history.back()"/>
+
 
 {% if ultimo %}
-<input type = "submit" name = "enviar" value = "Criar caderno" />
+<input type = "submit" name = "submit" value = "Criar caderno" />
 {% endif %}
 {% endblock content %}

@@ -1,13 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import q_c_q
 from api.models import User, UserProfile
-
-class questaoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = q_c_q
-        fields =('id','assunto','ano','banca','orgao','cargo','questao','tipo','gabarito','comando','texto_item')
-
 
 
 ############################ USERS  #######################################
@@ -15,7 +8,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserProfile
-        fields = ('questoes_feitas', 'photo')
+        fields = ('photo')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

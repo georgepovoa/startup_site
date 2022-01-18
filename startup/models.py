@@ -8,20 +8,6 @@
 from django.db import models
 
 
-class Artigo(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.TextField(blank=True, null=True)
-    sec = models.TextField(blank=True, null=True)
-    subsec = models.TextField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-    endereco = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'artigo'
-
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -89,15 +75,6 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
-class Capitulos(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'capitulos'
 
 
 class DjangoAdminLog(models.Model):
@@ -143,88 +120,3 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-
-class Nivel2(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.TextField(blank=True, null=True)
-    sec = models.TextField(blank=True, null=True)
-    subsec = models.TextField(blank=True, null=True)
-    artigo = models.TextField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-    endereco = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'nivel2'
-
-
-class Nivel3(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.TextField(blank=True, null=True)
-    sec = models.TextField(blank=True, null=True)
-    subsec = models.TextField(blank=True, null=True)
-    artigo = models.TextField(blank=True, null=True)
-    nivel2 = models.TextField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-    endereco = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'nivel3'
-
-
-class Nivel4(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.TextField(blank=True, null=True)
-    sec = models.TextField(blank=True, null=True)
-    subsec = models.TextField(blank=True, null=True)
-    artigo = models.TextField(blank=True, null=True)
-    nivel2 = models.TextField(blank=True, null=True)
-    nivel3 = models.TextField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-    endereco = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'nivel4'
-
-
-class Secao(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.IntegerField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'secao'
-
-
-class Subsecao(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    titulo = models.IntegerField(blank=True, null=True)
-    capitulo = models.IntegerField(blank=True, null=True)
-    sec = models.IntegerField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'subsecao'
-
-
-class Titulos(models.Model):
-    id = models.IntegerField(blank=True, null=True)
-    lei = models.TextField(blank=True, null=True)
-    texto = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'titulos'

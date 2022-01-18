@@ -75,7 +75,7 @@ class Nivel3 extends React.Component {
                 })}
 
                 {nivel4 ? nivel4.map(itens => {
-                        return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} />
+                        return <Nivel4 aberto={isOpen} texto={itens.texto} id_nivel4={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} id_alteradas = {this.props.id_alteradas}/>
                 }):<div></div>}
 
             </div>

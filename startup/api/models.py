@@ -9,25 +9,6 @@ import json
 # Create your models here.
 
 
-class q_c_q(models.Model):
-    id = models.IntegerField(blank=True, primary_key=True)
-    assunto = models.TextField(blank=True, null=True)
-    ano = models.IntegerField(blank=True, null=True)
-    banca = models.TextField(blank=True, null=True)
-    orgao = models.TextField(blank=True, null=True)
-    cargo = models.TextField(blank=True, null=True)
-    questao = models.TextField(blank=True, null=True)
-    tipo = models.TextField(blank=True, null=True)
-    gabarito = models.TextField(blank=True, null=True)
-    comando = models.TextField(blank=True, null=True)
-    texto_item = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'q_c_q'
-
-
-
 ##########################################################################################
 ################################       USER   ####################################################
 class User(AbstractUser):
@@ -44,7 +25,6 @@ class User(AbstractUser):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    questoes_feitas = models.TextField(blank=True,null=True)
     photo = models.ImageField(upload_to='uploads', blank=True)
 
     
