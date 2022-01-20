@@ -333,9 +333,10 @@ def tela_profile_picker(request):
     user = request.user
     if user.is_authenticated:
         response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
-
-        
-        return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
+        if response == "NoneType":
+            return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
+        else:
+            return render(request,template_name="frontend/profile_picker.html")
     else:
         return redirect("accounts/login")
 
