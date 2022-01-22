@@ -1,9 +1,7 @@
 import React from 'react';
-
 import SubSec from './subsec';
 import Artigo from './artigos';
 import axios from 'axios';
-import * as data_q from "./data_questoes.json"
 import Questoes from './questoes';
 
 class Secoes extends React.Component {
@@ -15,6 +13,8 @@ class Secoes extends React.Component {
             subSec: [],
             artigos: [],
             isOpen: false,
+            questoes: [],
+
         }
 
     }
@@ -41,30 +41,36 @@ class Secoes extends React.Component {
             else {
                 subsecoes = subordinado.data
             }
+            var questoes = []
+            if (this.props.id_alteradas.includes(this.props.id_secoes)) {
+                questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_secoes)).data
+    
+            }
+            
 
 
         this.setState({
             subSec: subsecoes,
-            artigos: artigo
+            artigos: artigo,
+            questoes:questoes
         })
 
     }
 
     render() {
-        const { subSec, isOpen, artigos } = this.state;
+        const { subSec, isOpen, artigos,questoes } = this.state;
 
         const url = Object.values(this.props.custom_list)
+        const questoes_lista = Object.values(questoes)
+
 
         const id_custom_view = url
 
         const user = this.props.current_user
-        var lista_custom_filter_questao = []
         var tem_questao = false
 
-        const lista_custom_filter_questao_prep = data_q[user]
-        if (String(lista_custom_filter_questao_prep) !== "undefined") {
-            lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.secao == this.props.id_secoes && i.secao !== "" && i.subsecao === "")
-            if (lista_custom_filter_questao.length > 0) { tem_questao = true }
+        if (questoes_lista.length != 0) {
+            tem_questao = true
         }
 
         if (this.props.aberto) {
@@ -73,9 +79,9 @@ class Secoes extends React.Component {
                 <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_secoes} {tem_questao === true && <p>...</p>}</p>
 
 
-                {lista_custom_filter_questao.map(i => {
+                {questoes_lista.map(i => {
                     if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen}></Questoes>
+                        return <Questoes texto={i.correcao} id_questao = {i.id_q} aberto={isOpen}></Questoes>
                     }
                 })}
 

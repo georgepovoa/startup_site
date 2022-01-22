@@ -2,7 +2,6 @@ import React from 'react';
 import Secoes from './secoes';
 import Artigo from './artigos';
 import axios from 'axios';
-import * as data_q from "./data_questoes.json"
 import Questoes from './questoes';
 
 
@@ -42,11 +41,18 @@ class Capitulo extends React.Component {
             secao = subordinado.data
         }
 
+        var questoes = []
+            if (this.props.id_alteradas.includes(this.props.id_capitulo)) {
+                questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_capitulo)).data
+
+            }
+
 
         this.setState({
             secoes: secao,
             artigos: artigo,
-            loading: false
+            loading: false,
+            questoes:questoes
         })
 
         document.body.style.cursor = 'default'
@@ -57,23 +63,21 @@ class Capitulo extends React.Component {
 
     render() {
         
-        const { secoes, isOpen, artigos } = this.state;
+        const { secoes, isOpen, artigos,questoes } = this.state;
 
         const url = Object.values(this.props.custom_list)
         const id_custom_view = url
 
         const user = this.props.current_user
-        var lista_custom_filter_questao = []
-        var tem_questao = false
 
-        const lista_custom_filter_questao_prep = data_q[user]
-        if (String(lista_custom_filter_questao_prep) !== "undefined") {
-            lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.capitulo == this.props.id_capitulo && i.capitulo !== "" && i.secao === "" && i.artigo === "")
-            if (lista_custom_filter_questao.length > 0) { tem_questao = true }
-        }
-        if (this.props.id_alteradas.includes(this.props.id_capitulo)){
-            console.log("TEM MATCH CAPITULO")
-        }
+        
+        const questoes_lista = Object.values(questoes)
+
+        var tem_questao = false
+                if (questoes_lista.length != 0) {
+                    tem_questao = true
+                }
+        
         if (this.props.aberto) {
 
             return (
@@ -82,11 +86,11 @@ class Capitulo extends React.Component {
                     <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_capitulo}{tem_questao === true && <p>...</p>}</p>
 
 
-                    {lista_custom_filter_questao.map(i => {
-                        if (isOpen) {
-                            return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto={isOpen} ></Questoes>
-                        }
-                    })}
+                    {questoes_lista.map(i => {
+                    if (isOpen) {
+                        return <Questoes texto={i.correcao} id_questao = {i.id_q} aberto={isOpen}></Questoes>
+                    }
+                })}
 
                     {secoes || artigos ? secoes.map(itens => {
                         return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>

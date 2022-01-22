@@ -40,7 +40,7 @@ class Artigo extends React.Component {
             nivel2 = subordinado.data
             var questoes = []
             if (this.props.id_alteradas.includes(this.props.id_artigo)) {
-                questoes = await (await axios.get("http://localhost:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_artigo)).data
+                questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_artigo)).data
 
             }
 

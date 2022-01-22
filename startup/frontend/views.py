@@ -81,8 +81,6 @@ def submit_q_e(request, *args, **kwargs):
         return d
     # o submit_q_e é o form que aparece depois do usuário responder 
     # Só as questões falsas pq precisam de correção do usuário
-    usuario = UserProfile.objects.get(user = request.user)
-    usuario_para_anexo = User.objects.get(email = request.user).id
     form = AnexoForm(request.POST, request.FILES)
     if form.is_valid() and request.FILES:
         print(request.FILES, "REQUESTFILES")
@@ -122,7 +120,7 @@ def submit_q_e(request, *args, **kwargs):
     "correcao":' '.join(correcao),
     
     }
-    requests.put("http://localhost:3000/adicionarquestao",params=y)
+    requests.put("http://startup_api_1:3000/adicionarquestao",params=y)
     
 
 
@@ -138,7 +136,7 @@ def questao(request, *args, **kwargs):
 
     # Aqui pego as questões que o usuario já fez
     
-    api_usuario_questoes = requests.get("http://localhost:3000/user/{}".format(request.user)).json()
+    api_usuario_questoes = requests.get("http://startup_api_1:3000/user/{}".format(request.user)).json()
     lista_do_usuario = api_usuario_questoes["questoes_feitas"]
     lista_do_usuario = "&q=".join(str(x) for x in lista_do_usuario)
     print(lista_do_usuario)
@@ -148,7 +146,7 @@ def questao(request, *args, **kwargs):
 
 #e qui eu verifico se o usuário ainda não fez a questão
     
-    data = requests.get("http://localhost:3000/questoes/cf88/uma?q="+lista_do_usuario).json()
+    data = requests.get("http://startup_api_1:3000/questoes/cf88/uma?q="+lista_do_usuario).json()
 
     id = data["_id"]
     ano = data["ano"]
@@ -161,7 +159,7 @@ def questao(request, *args, **kwargs):
     texto_item = data["texto_item"].strip()
     loc_lei = data["loc_lei"]
 
-    lei_txt = requests.get("http://localhost:3000/{}".format(id)).json()[0]["texto"]
+    lei_txt = requests.get("http://startup_api_1:3000/{}".format(id)).json()[0]["texto"]
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -264,30 +262,14 @@ def display_Anexo2_images_by_user(request):
 
 
 
-### DEF para salvar questão na lei
-def write_json_q(user,new_data, filename=r'/home/george/Documents/djreact/startup/frontend/src/components/leis/data_questoes.json'):
-    with open(filename,'r+') as file:
-          # First we load existing data into a dict.
-        file_data = json.load(file)
-        # Join new_data with file_data inside emp_details
-        if user in file_data:
-            print("já tem")
-            file_data[user].update(new_data)
-        else: 
-            file_data[user] = new_data
-        # Sets file's current position at offset.
-        file.seek(0)
-        # convert back to json.
-        json.dump(file_data, file, indent =0)
-
-
 def home_user_view(request,id_caderno):
   
     if request.method == 'GET':
         
         user = request.user
         if user.is_authenticated:
-            response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
+            
+            response = requests.get("http://startup_api_1:3000/cadernos/{}".format(user)).json()
             
             nome_caderno = response["cadernos"][str(id_caderno)]["nome_caderno"]
         else : 
@@ -305,7 +287,7 @@ def profile(request):
 
 def homepage(request):
     if request.method == "POST":
-        response = requests.get("http://localhost:3000/titulo")
+        response = requests.get("http://startup_api_1:3000/titulo")
 
         json_response = response.json()
         print(json_response)
@@ -332,8 +314,8 @@ def todo(request):
 def tela_profile_picker(request):
     user = request.user
     if user.is_authenticated:
-        response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
-        if response == "NoneType":
+        response = requests.get("http://startup_api_1:3000/cadernos/{}".format(user)).json()
+        if response != "NoneType":
             return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
         else:
             return render(request,template_name="frontend/profile_picker.html")
@@ -371,7 +353,7 @@ def create_caderno(request):
         
         
         payload = {"item_ids":recomendado_formatado}
-        recomendado_api.append(requests.get("http://localhost:3000/lista/{lista_id}",params=payload).json())
+        recomendado_api.append(requests.get("http://startup_api_1:3000/lista/{lista_id}",params=payload).json())
         old_key = "_id"
         new_key = "id"
         for i in recomendado_api:
@@ -391,7 +373,7 @@ def create_caderno(request):
     
     if request.method == "POST" and request.POST["submit"] == "Criar caderno":
         print(request.user)
-        cadernos_dict = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+        cadernos_dict = requests.get("http://startup_api_1:3000/cadernos/{}".format(request.user)).json()
         new_id = int(list(cadernos_dict["cadernos"])[-1]) + 1
         list_of_ids = request.POST["marcados_anteriormente"].split(",")
         while "" in list_of_ids:
@@ -403,14 +385,14 @@ def create_caderno(request):
         bancas_str = '"bancas":{}'.format(bancas)
         cargos_str = '"cargos":{}'.format(cargos)
         completo = "{" + ind_lei_str + ","+ bancas_str +","+cargos_str +"}"        
-        requests.put("http://localhost:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
+        requests.put("http://startup_api_1:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
         
         return redirect("create_caderno")
 
 
     user = request.user
     if user.is_authenticated:
-        response =requests.get("http://localhost:3000/titulo").json()
+        response =requests.get("http://startup_api_1:3000/titulo").json()
         old_key = "_id"
         new_key = "id"
         for i in response:

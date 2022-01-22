@@ -1,8 +1,5 @@
 import React from 'react';
-
 import axios from 'axios';
-
-import * as data_q from "./data_questoes.json"
 import Questoes from './questoes';
 
 
@@ -13,37 +10,44 @@ class Nivel4 extends React.Component {
 
         this.state = {
             isOpen: false,
+            questoes:[],
+
 
         }
     }
     async componentDidMount() {
 
+        var questoes = []
+        if (this.props.id_alteradas.includes(this.props.id_nivel4)) {
+            questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_nivel4)).data
 
+        }
+        this.setState({questoes:questoes})
     }
 
     render() {
 
-        const { isOpen } = this.state;
+        const { isOpen,questoes } = this.state;
         const user = this.props.current_user
-        var lista_custom_filter_questao = []
-        var tem_questao = false
+        const questoes_lista = Object.values(questoes)
 
-        const lista_custom_filter_questao_prep = data_q[user]
-        if (String(lista_custom_filter_questao_prep) !== "undefined") {
-            lista_custom_filter_questao = Object.values(lista_custom_filter_questao_prep).filter(i => i.nivel4 == this.props.id_nivel4 && i.nivel4 !== "")
-            if(lista_custom_filter_questao.length>0){
-                tem_questao=true
-            }
-        }
+        var tem_questao = false
+                if (questoes_lista.length != 0) {
+                    tem_questao = true
+                }
+            
+        
+         
+       
         if (this.props.aberto) {
             return (<div className="nivel4">
 
                 <p onClick={() => this.setState({ isOpen: !this.state.isOpen })} >{this.props.texto} - ID {this.props.id_nivel4} {tem_questao===true && <p>...</p>}</p>
-                {lista_custom_filter_questao.map(i => {
-                    if (isOpen) {
-                        return <Questoes texto={i.texto_item} ano={i.ano} cargo={i.cargo} banca={i.banca} orgao={i.orgao} aberto = {isOpen}></Questoes>
-                    }
-                })}
+                {questoes_lista.map(i => {
+                            if (isOpen) {
+                                return <Questoes texto={i.correcao} id_questao = {i.id_q} aberto={isOpen}></Questoes>
+                            }
+                        })}
             </div>
             )
         }

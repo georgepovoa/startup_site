@@ -1,11 +1,8 @@
 import React from 'react';
 import Capitulos from './capitulos';
 import Artigo from './artigos';
-
-
-
 import axios from 'axios';
-import { UserContext } from './lei';
+import Questoes from './questoes';
 
 class Titulo extends React.Component {
     constructor(props) {
@@ -23,9 +20,6 @@ class Titulo extends React.Component {
 
     async componentDidMount() {
         
-
-
-        console.log(this.state.loading + "tt")
         var lista_recebidos = this.props.lista_de_subordinados
         var string_list = "lista/{lista_id}?"
 
@@ -44,12 +38,18 @@ class Titulo extends React.Component {
             else {
                 capitulo = subordinado.data
             }
+            var questoes = []
+            if (this.props.id_alteradas.includes(this.props.id_titulo)) {
+                questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_titulo)).data
+
+            }
 
             
             this.setState({
                 capitulos: capitulo,
                 artigos: artigo,
-                loading:false
+                loading:false,
+                questoes: questoes
             })
         }
         
@@ -61,7 +61,7 @@ class Titulo extends React.Component {
     render() {
 
         
-        const { capitulos, isOpen, artigos } = this.state;
+        const { capitulos, isOpen, artigos,questoes } = this.state;
 
 
         const url = Object.values(this.props.custom_list)
@@ -70,15 +70,27 @@ class Titulo extends React.Component {
 
         
 
-        if (this.props.id_alteradas.includes(this.props.id_titulo)){
-            console.log("TEM MATCH TITULO")
-        }
+        const questoes_lista = Object.values(questoes)
+
+        var tem_questao = false
+                if (questoes_lista.length != 0) {
+                    tem_questao = true
+                }
+    
 
         return (
                 
             
         <div className="titulo">
             <p onClick={() => this.setState({ isOpen: !this.state.isOpen })}>{this.props.texto}</p>
+
+            {questoes_lista.map(i => {
+                    if (isOpen) {
+                        return <Questoes texto={i.correcao} id_questao = {i.id_q} aberto={isOpen}></Questoes>
+                    }
+                })}
+
+                
             {capitulos.map(itens => {                
                 return <Capitulos id_capitulo={itens._id} texto={itens.texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}></Capitulos>
             })}
