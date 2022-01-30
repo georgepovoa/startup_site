@@ -10,7 +10,6 @@
 
 {% endfor %}
 <input type = "hidden" name = "marcados_anteriormente" value = "{{marcados}}" />
-<input type = "hidden" name = "nome_caderno" value = "Caderno Criado" />
 <input type = "hidden" name = "leis_caderno" value = "cf88" />
 
 <input type = "submit" name = "submit" value = "Prosseguir"/>
@@ -18,6 +17,12 @@
 
 
 {% if ultimo %}
+<input type = "text" name = "nome_caderno" placeholder="Nome Do Caderno" required/>
+
 <input type = "submit" name = "submit" value = "Criar caderno" />
 {% endif %}
+
+<div draggable="true">
+    <p></p>
+</div>
 {% endblock content %}

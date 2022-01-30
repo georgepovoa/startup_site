@@ -93,8 +93,9 @@ class Capitulo extends React.Component {
                 })}
 
                     {secoes || artigos ? secoes.map(itens => {
-                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}/>
-                    }) : <p>Loading</p>}
+                        if(this.props.filtro.includes(itens._id)){
+                        return <Secoes aberto={isOpen} texto={itens.texto} id_secoes={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas} filtro = {this.props.filtro}/>
+        }}) : <p>Loading</p>}
 
 
                     {secoes || artigos ? artigos.map(itens => {

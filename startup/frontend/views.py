@@ -120,7 +120,7 @@ def submit_q_e(request, *args, **kwargs):
     "correcao":' '.join(correcao),
     
     }
-    requests.put("http://startup_api_1:3000/adicionarquestao",params=y)
+    requests.put("http://localhost:3000/adicionarquestao",params=y)
     
 
 
@@ -136,17 +136,25 @@ def questao(request, *args, **kwargs):
 
     # Aqui pego as questões que o usuario já fez
     
-    api_usuario_questoes = requests.get("http://startup_api_1:3000/user/{}".format(request.user)).json()
+    api_usuario_questoes = requests.get("http://localhost:3000/user/{}".format(request.user)).json()
     lista_do_usuario = api_usuario_questoes["questoes_feitas"]
     lista_do_usuario = "&q=".join(str(x) for x in lista_do_usuario)
-    print(lista_do_usuario)
+    
+
+    # PEGAR A LISTA DO CADERNO
+
+    lista_id_caderno = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+    id_caderno_ativo = lista_id_caderno["caderno_ativo"]
+    caderno_ativo = lista_id_caderno["cadernos"][str(id_caderno_ativo)]["indices_lei"]
+    caderno_ativo = "&q_c=".join(str(x) for x in caderno_ativo)
+    
 
 ## Pegar infos da questão ##
     
 
 #e qui eu verifico se o usuário ainda não fez a questão
     
-    data = requests.get("http://startup_api_1:3000/questoes/cf88/uma?q="+lista_do_usuario).json()
+    data = requests.get("http://localhost:3000/questoes/cf88/uma?q="+lista_do_usuario+caderno_ativo).json()
 
     id = data["_id"]
     ano = data["ano"]
@@ -159,7 +167,7 @@ def questao(request, *args, **kwargs):
     texto_item = data["texto_item"].strip()
     loc_lei = data["loc_lei"]
 
-    lei_txt = requests.get("http://startup_api_1:3000/{}".format(id)).json()[0]["texto"]
+    lei_txt = requests.get("http://localhost:3000/{}".format(id)).json()[0]["texto_completo"]
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -269,7 +277,7 @@ def home_user_view(request,id_caderno):
         user = request.user
         if user.is_authenticated:
             
-            response = requests.get("http://startup_api_1:3000/cadernos/{}".format(user)).json()
+            response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
             
             nome_caderno = response["cadernos"][str(id_caderno)]["nome_caderno"]
         else : 
@@ -287,7 +295,7 @@ def profile(request):
 
 def homepage(request):
     if request.method == "POST":
-        response = requests.get("http://startup_api_1:3000/titulo")
+        response = requests.get("http://localhost:3000/titulo")
 
         json_response = response.json()
         print(json_response)
@@ -312,9 +320,12 @@ def todo(request):
 
 
 def tela_profile_picker(request):
+    if request.method == "POST":
+        caderno_selecionado = request.POST["caderno_selecionado"]
+        
     user = request.user
     if user.is_authenticated:
-        response = requests.get("http://startup_api_1:3000/cadernos/{}".format(user)).json()
+        response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
         if response != "NoneType":
             return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
         else:
@@ -353,9 +364,11 @@ def create_caderno(request):
         
         
         payload = {"item_ids":recomendado_formatado}
-        recomendado_api.append(requests.get("http://startup_api_1:3000/lista/{lista_id}",params=payload).json())
+        #recomendado_api.append(requests.get("http://startup_api_1:3000/lista/createcaderno/{lista_id}",params=payload).json())
+        recomendado_api.append(requests.get("http://localhost:3000/lista/createcaderno/{lista_id}",params=payload).json())
         old_key = "_id"
         new_key = "id"
+        print(recomendado_api)
         for i in recomendado_api:
             for j in i:
                 j[new_key]= j.pop(old_key)
@@ -373,8 +386,11 @@ def create_caderno(request):
     
     if request.method == "POST" and request.POST["submit"] == "Criar caderno":
         print(request.user)
-        cadernos_dict = requests.get("http://startup_api_1:3000/cadernos/{}".format(request.user)).json()
-        new_id = int(list(cadernos_dict["cadernos"])[-1]) + 1
+        cadernos_dict = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+        if len(list(cadernos_dict["cadernos"])) !=0:
+            new_id = int(list(cadernos_dict["cadernos"])[-1]) + 1
+        else:
+            new_id = 0
         list_of_ids = request.POST["marcados_anteriormente"].split(",")
         while "" in list_of_ids:
             list_of_ids.remove("")
@@ -385,14 +401,14 @@ def create_caderno(request):
         bancas_str = '"bancas":{}'.format(bancas)
         cargos_str = '"cargos":{}'.format(cargos)
         completo = "{" + ind_lei_str + ","+ bancas_str +","+cargos_str +"}"        
-        requests.put("http://startup_api_1:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
+        requests.put("http://localhost:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
         
         return redirect("create_caderno")
 
 
     user = request.user
     if user.is_authenticated:
-        response =requests.get("http://startup_api_1:3000/titulo").json()
+        response =requests.get("http://localhost:3000/titulo").json()
         old_key = "_id"
         new_key = "id"
         for i in response:

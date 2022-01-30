@@ -91,13 +91,15 @@ class Titulo extends React.Component {
                 })}
 
                 
-            {capitulos.map(itens => {                
-                return <Capitulos id_capitulo={itens._id} texto={itens.texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}></Capitulos>
-            })}
+            {capitulos.map(itens => {
+                if(this.props.filtro.includes(itens._id)){                
+                return <Capitulos id_capitulo={itens._id} texto={itens.texto} aberto={isOpen} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas} filtro = {this.props.filtro}></Capitulos>
+    }})}
             {artigos.map(itens => {
+                if(this.props.filtro.includes(itens._id)){
                 return <Artigo aberto={isOpen} texto={itens.texto} id_artigo={itens._id} custom_list={id_custom_view} current_user={this.props.current_user} lista_de_subordinados={itens.subordinado} id_alteradas = {this.props.id_alteradas}></Artigo >
 
-            })}
+    }})}
                     
         </div>
         )
