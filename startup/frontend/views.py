@@ -52,6 +52,39 @@ def index(request, *args, **kwargs):
     return render(request, 'frontend/index.html')
 
 
+def homepage(request):
+    if request.method == "POST":
+        email = request.POST["email-user"]
+        if User.objects.filter(email=email).exists():
+            return redirect("accounts/login")
+        else:
+            return redirect("register")
+    
+    if request.user.is_authenticated:
+        return redirect(tela_profile_picker)
+
+    return render(request,template_name="frontend/homepage.html")
+
+
+
+
+def tela_profile_picker(request):
+    if request.method == "POST":
+        caderno_selecionado = request.POST["caderno_selecionado"]
+        print(caderno_selecionado)
+        
+    user = request.user
+    if user.is_authenticated:
+        response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
+        if response != "NoneType":
+            return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
+        else:
+            return render(request,template_name="frontend/profile_picker.html")
+    else:
+        return redirect("accounts/login")
+
+
+
 
 def submit_q_e(request, *args, **kwargs):
     def negritar(antes,depois):
@@ -88,16 +121,15 @@ def submit_q_e(request, *args, **kwargs):
         new_anex.save()
         print(new_anex)
     else :
-        print("ERRO"*30)
         print(form.errors )
     #recebe correcao e separa em uma lista para colocar em Maiúsculo as palavras alteradas0
     correcao = request.POST["campo_texto"]
 
     id = int(request.POST["user_id"])
-    cargo = request.POST["cargo"]
-    banca = request.POST["banca"]
-    ano = request.POST["ano"]
-    orgao = request.POST["orgao"]
+    # cargo = request.POST["cargo"]
+    # banca = request.POST["banca"]
+    # ano = request.POST["ano"]
+    # orgao = request.POST["orgao"]
     loc_lei = request.POST["loc_lei"]
 
     resultado = bool(request.POST["resultado"])
@@ -167,7 +199,7 @@ def questao(request, *args, **kwargs):
     texto_item = data["texto_item"].strip()
     loc_lei = data["loc_lei"]
 
-    lei_txt = requests.get("http://localhost:3000/{}".format(id)).json()[0]["texto_completo"]
+    lei_txt = requests.get("http://localhost:3000/lei/{}".format(id)).json()[0]["texto_completo"]
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -287,51 +319,6 @@ def home_user_view(request,id_caderno):
         return render(request,template_name="frontend/homeuser.html",context={"id_caderno":id_caderno,"nome_caderno":nome_caderno})
     
 
-def profile(request):
-    usuario = UserProfile.objects.get(user = request.user)
-
-    if request.method == "GET":
-        return render(request,template_name="frontend/profile.html")
-
-def homepage(request):
-    if request.method == "POST":
-        response = requests.get("http://localhost:3000/titulo")
-
-        json_response = response.json()
-        print(json_response)
-
-        email = request.POST["email-user"]
-        if User.objects.filter(email=email).exists():
-            return redirect("accounts/login")
-        else:
-            return redirect("register")
-    
-    if request.user.is_authenticated:
-        return redirect(tela_profile_picker)
-
-    return render(request,template_name="frontend/homepage.html")
-
-def todo(request):
-    teste = col.find({'_id':10}).limit(3)
-    for i in teste:
-        print(i)
-    return render(request,template_name="frontend/todo.html")
-
-
-
-def tela_profile_picker(request):
-    if request.method == "POST":
-        caderno_selecionado = request.POST["caderno_selecionado"]
-        
-    user = request.user
-    if user.is_authenticated:
-        response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
-        if response != "NoneType":
-            return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
-        else:
-            return render(request,template_name="frontend/profile_picker.html")
-    else:
-        return redirect("accounts/login")
 
 
 def create_caderno(request):
