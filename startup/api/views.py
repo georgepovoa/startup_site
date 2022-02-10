@@ -16,9 +16,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     
     
-    
-
-
 class CurrentUserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     

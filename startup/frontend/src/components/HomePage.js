@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Lei from "./leis/lei";
+import Caderno from "./caderno/caderno";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
@@ -28,6 +29,8 @@ export default class HomePage extends Component {
                 
                 <Switch>
                     <Route path="/lei/:id_pv" component={Lei}></Route>
+                    <Route path="/criarcadernoreact" component={Caderno}></Route>
+                    
 
                 </Switch>
             </Router>

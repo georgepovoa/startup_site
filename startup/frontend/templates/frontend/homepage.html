@@ -1,8 +1,18 @@
-{% extends 'frontend/base.html' %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
-{%load static%}
+<head>
+    <meta charset="UTF-8" />
+    <meta name='viewport' content="width=device-width , initial-scale =1" />
+    <title>StartUp</title>
+    {%load static%}
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/content.css"%}" />
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<a class = "entrar_btn" href="/accounts/login">Entrar</a>
 <header class="hero">
+    
     <div class="container spacing">
         <h1 class="primary-title">Slogan da parada</h1>
         <p>Lorem, ipsum dolor sit amet consectetur ducimus, aliquid corporis amet excepturi beatae blanditiis, sunt enim
@@ -11,7 +21,7 @@
             {% csrf_token %}
             <input class="homepPageInput" placeholder="Email" name = "email-user" type="text"/>
             <input type="submit" class="btn" value="Vamos Lá  >" />
-            {% csrf_token %}
+            
         </form>
     </div>
 </header>
@@ -74,4 +84,3 @@
         </div>
     </section>
 </main>
-{% endblock content %}

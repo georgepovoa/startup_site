@@ -5,7 +5,7 @@ from django.http.request import HttpHeaders
 from django.http.response import HttpResponse
 from django.shortcuts import  render, redirect
 from .forms import NewUserForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
 import rest_framework
 from api.models import User, UserProfile, Anexo2
@@ -18,10 +18,12 @@ db = client['CF88']
 col = db["Lei"]
 
 
+api_url = "http://localhost:3000"
 
+# em docker http://startup_api_1:3000
 
+# em localhost http://localhost:3000
 
-# Create your views here.
 
 jsonDec = json.decoder.JSONDecoder()
 
@@ -72,10 +74,12 @@ def tela_profile_picker(request):
     if request.method == "POST":
         caderno_selecionado = request.POST["caderno_selecionado"]
         print(caderno_selecionado)
-        
+        requests.put(api_url + "/cad/definir_atual?user={}&caderno_id={}".format(request.user,caderno_selecionado))
+
+        return redirect("homeuser/{}".format(caderno_selecionado))
     user = request.user
     if user.is_authenticated:
-        response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
+        response = requests.get(api_url+"/cadernos/{}".format(user)).json()
         if response != "NoneType":
             return render(request,template_name="frontend/profile_picker.html",context = {"cadernos":response["cadernos"]})
         else:
@@ -95,7 +99,6 @@ def submit_q_e(request, *args, **kwargs):
         e = []
         d = []
         c = difflib.context_diff(a, b,lineterm="",n=200)
-        passou_ast = False
         pode = False
 
         for i in c:
@@ -152,7 +155,7 @@ def submit_q_e(request, *args, **kwargs):
     "correcao":' '.join(correcao),
     
     }
-    requests.put("http://localhost:3000/adicionarquestao",params=y)
+    requests.put(api_url+"/adicionarquestao",params=y)
     
 
 
@@ -168,14 +171,14 @@ def questao(request, *args, **kwargs):
 
     # Aqui pego as questões que o usuario já fez
     
-    api_usuario_questoes = requests.get("http://localhost:3000/user/{}".format(request.user)).json()
+    api_usuario_questoes = requests.get(api_url+"/user/{}".format(request.user)).json()
     lista_do_usuario = api_usuario_questoes["questoes_feitas"]
     lista_do_usuario = "&q=".join(str(x) for x in lista_do_usuario)
     
 
     # PEGAR A LISTA DO CADERNO
 
-    lista_id_caderno = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+    lista_id_caderno = requests.get(api_url+"/cadernos/{}".format(request.user)).json()
     id_caderno_ativo = lista_id_caderno["caderno_ativo"]
     caderno_ativo = lista_id_caderno["cadernos"][str(id_caderno_ativo)]["indices_lei"]
     caderno_ativo = "&q_c=".join(str(x) for x in caderno_ativo)
@@ -186,7 +189,7 @@ def questao(request, *args, **kwargs):
 
 #e qui eu verifico se o usuário ainda não fez a questão
     
-    data = requests.get("http://localhost:3000/questoes/cf88/uma?q="+lista_do_usuario+caderno_ativo).json()
+    data = requests.get(api_url+"/questoes/cf88/uma?q="+lista_do_usuario+caderno_ativo).json()
 
     id = data["_id"]
     ano = data["ano"]
@@ -199,7 +202,7 @@ def questao(request, *args, **kwargs):
     texto_item = data["texto_item"].strip()
     loc_lei = data["loc_lei"]
 
-    lei_txt = requests.get("http://localhost:3000/lei/{}".format(id)).json()[0]["texto_completo"]
+    lei_txt = requests.get(api_url+"/lei/{}".format(id)).json()[0]["texto_completo"]
 ## Pegar infos da questão ##
 
 #Primeiro if é só da resposta
@@ -278,6 +281,7 @@ def questao(request, *args, **kwargs):
                   )
 
 def register_request(request):
+    #criar caderno para usuario aqui
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -286,6 +290,7 @@ def register_request(request):
             user.save()
             login(request,user)
             messages.success(request,"Registration successful")
+            requests.post(api_url+"/cadernos?user={}".format(request.user))
             return redirect("/accounts/login")
         messages.error(request,"Unsuccessful registration. Invalid information")
     form = NewUserForm()
@@ -309,7 +314,7 @@ def home_user_view(request,id_caderno):
         user = request.user
         if user.is_authenticated:
             
-            response = requests.get("http://localhost:3000/cadernos/{}".format(user)).json()
+            response = requests.get(api_url+"/cadernos/{}".format(user)).json()
             
             nome_caderno = response["cadernos"][str(id_caderno)]["nome_caderno"]
         else : 
@@ -352,7 +357,7 @@ def create_caderno(request):
         
         payload = {"item_ids":recomendado_formatado}
         #recomendado_api.append(requests.get("http://startup_api_1:3000/lista/createcaderno/{lista_id}",params=payload).json())
-        recomendado_api.append(requests.get("http://localhost:3000/lista/createcaderno/{lista_id}",params=payload).json())
+        recomendado_api.append(requests.get(api_url+"/lista/createcaderno/{lista_id}",params=payload).json())
         old_key = "_id"
         new_key = "id"
         print(recomendado_api)
@@ -373,7 +378,7 @@ def create_caderno(request):
     
     if request.method == "POST" and request.POST["submit"] == "Criar caderno":
         print(request.user)
-        cadernos_dict = requests.get("http://localhost:3000/cadernos/{}".format(request.user)).json()
+        cadernos_dict = requests.get(api_url+"/cadernos/{}".format(request.user)).json()
         if len(list(cadernos_dict["cadernos"])) !=0:
             new_id = int(list(cadernos_dict["cadernos"])[-1]) + 1
         else:
@@ -388,14 +393,14 @@ def create_caderno(request):
         bancas_str = '"bancas":{}'.format(bancas)
         cargos_str = '"cargos":{}'.format(cargos)
         completo = "{" + ind_lei_str + ","+ bancas_str +","+cargos_str +"}"        
-        requests.put("http://localhost:3000/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
+        requests.put(api_url+"/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
         
         return redirect("create_caderno")
 
 
     user = request.user
     if user.is_authenticated:
-        response =requests.get("http://localhost:3000/titulo").json()
+        response =requests.get(api_url+"/titulo").json()
         old_key = "_id"
         new_key = "id"
         for i in response:
@@ -409,4 +414,15 @@ def create_caderno(request):
         return redirect("accounts/login")
 
 
+def logout_screen(request):
+    logout(request)
+    return redirect("/")
 
+def post_react_create_caderno(request):
+    if request.method == "POST":
+        subordinados = request.POST.getlist('marcados')
+        print(subordinados)
+        
+        print(request.POST)
+
+    

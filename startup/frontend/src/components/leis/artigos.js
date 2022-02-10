@@ -3,10 +3,6 @@ import Nivel2 from './nivel2';
 import axios from 'axios';
 import Questoes from './questoes';
 
-
-
-
-
 class Artigo extends React.Component {
     constructor(props) {
 

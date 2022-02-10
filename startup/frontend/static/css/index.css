@@ -85,7 +85,8 @@ section{
   background-blend-mode: multiply;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  --clr-accent:#faa700
+  --clr-accent:#faa700;
+  height: 100%;
 }
 
 .homepPageInput{
@@ -627,3 +628,77 @@ input[type="radio"]{
 /* SIDE MENU*/
 
 
+.entrar_btn{
+  position: fixed;
+  right: 5%;
+  top: 3%;
+  text-decoration: none;
+    color: var(--clr-text,white);
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 1em 1.25em;
+    background: var(--color-btn,blue);
+    border-radius: 0.25em;
+
+    transition: transform 250ms ease-in-out, opacity 175ms linear;
+}
+
+.cadernoreact{
+  display: inline-flex;
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+}
+.escolher{
+  width: 30%;
+  padding: 10px;
+  text-align: center;
+  overflow: auto;
+  border-style: solid;
+  height: 75%;
+  
+}
+.escolhidos{
+  width: 30%;
+  
+  padding: 10px;
+  text-align: center;
+  overflow: auto;
+  border-style: solid;
+  height: 75%;
+ 
+}
+.create-caderno-lei{
+  width: 30%;
+  padding: 10px;
+  text-align: center;
+  overflow: auto;
+  border-style: solid;
+  height: 75%;
+
+}
+
+.create-caderno-remove-item{
+  height: 5%;
+  align-self: center;
+  margin: 1%;
+}
+
+.create-caderno-item-escolhidos{
+  display: inline-flex;
+  padding: 15px;
+
+}
+
+.criar-caderno-btn-area{
+  position: absolute;
+  bottom: 10%;
+  right: 50%;
+}
+
+.caderno-escolher-item{
+  padding: 15px;
+}
