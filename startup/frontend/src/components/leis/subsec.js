@@ -18,13 +18,20 @@ class SubSec extends React.Component {
   }
   async componentDidMount() {
     var lista_recebidos = this.props.lista_de_subordinados
-    string_list += "item_ids="+i+"&"
+    var string_list = "lista/{lista_id}?"
     var artigo = []
     lista_recebidos.map(async i => {
       string_list += "item_ids="+i+"&"
     })
-    var subordinado = await axios.get('http://127.0.0.1:3000/' + i)
-    artigo.push(subordinado.data)
+    var subordinado = await axios.get('http://127.0.0.1:3000/' + string_list)
+    if (subordinado.data[0].tipo == "artigo") {
+        artigo = subordinado.data
+    }
+    var questoes = []
+    if (this.props.id_alteradas.includes(this.props.id_secoes)) {
+        questoes = await (await axios.get("http://127.0.0.1:3000/get_q_individual/" + this.props.current_user + "/questao/" + this.props.id_secoes)).data
+
+    }
 
     var questoes = []
     if (this.props.id_alteradas.includes(this.props.id_subsec)) {

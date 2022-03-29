@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Lei from "./leis/lei";
 import Caderno from "./caderno/caderno";
+import CadernoNome from "./caderno/nome_caderno";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import axios from "axios";
-
+import Image_upload from "./image_upload/image_upload";
 
 export default class HomePage extends Component {
     constructor(props) {
@@ -29,7 +30,11 @@ export default class HomePage extends Component {
                 
                 <Switch>
                     <Route path="/lei/:id_pv" component={Lei}></Route>
-                    <Route path="/criarcadernoreact" component={Caderno}></Route>
+                    <Route path="/criarcadernoreact/:nome" component={Caderno}></Route>
+                    <Route path="/criarcadernoreactnome" component={CadernoNome}></Route>
+                    <Route path="/upload_image" component={Image_upload}></Route>
+
+
                     
 
                 </Switch>

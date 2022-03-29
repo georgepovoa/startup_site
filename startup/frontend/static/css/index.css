@@ -655,7 +655,7 @@ input[type="radio"]{
 .escolher{
   width: 30%;
   padding: 10px;
-  text-align: center;
+  text-align:left;
   overflow: auto;
   border-style: solid;
   height: 75%;
@@ -665,7 +665,7 @@ input[type="radio"]{
   width: 30%;
   
   padding: 10px;
-  text-align: center;
+  text-align: left;
   overflow: auto;
   border-style: solid;
   height: 75%;
@@ -690,6 +690,7 @@ input[type="radio"]{
 .create-caderno-item-escolhidos{
   display: inline-flex;
   padding: 15px;
+  width: 100%;
 
 }
 
@@ -701,4 +702,92 @@ input[type="radio"]{
 
 .caderno-escolher-item{
   padding: 15px;
+}
+
+
+.criar-caderno-título{
+  font-size: 1.2rem;
+  
+  margin-left: 0;
+}
+
+.criar-caderno-capitulo{
+  margin-left: 5%;
+}
+
+
+.criar-caderno-secao{
+  margin-left: 10%;
+}
+
+.criar-caderno-subsecao{
+  margin-left: 15%;
+}
+
+.caderno-react-nome{
+  display: inline-flex;
+    justify-content: center;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    align-items: center;
+  
+
+}
+
+.criar-caderno-imagem{
+  width: 200px;
+  height: 200px;
+  border-radius: 100000000000000px;
+  
+  padding: 15px;
+  margin: 15px;
+}
+
+.caderno-react-nome-nome{
+  padding: 15px;
+}
+.caderno-react-nome-imagem{
+  
+  display: inline-flex;
+  
+}
+
+.filetype{
+  align-self: center;
+}
+
+.ord-e { pointer-events: none !important}
+.ord-w { pointer-events: none !important}
+
+.ord-se { pointer-events: none !important}
+.ord-sw { pointer-events: none !important}
+
+.ord-ne { pointer-events: none !important}
+.ord-nw { pointer-events: none !important}
+
+.ReactCrop__drag-bar{border: none;}
+
+.config-limpar-imagem{
+  position: absolute;
+  bottom: 10%;
+}
+
+.testeimagemsize{
+  width: 45%;
+  height: 45%;
+}
+.upload-image-master{
+  display: inline-flex;  
+  height: 45%;
+  width: 100%;
+  
+}
+.upload-image-input-file{
+  position: absolute;
+  top: 5px;
+}
+
+.upload-image-master > * {
+  margin: 30px 15px;
 }

@@ -4,6 +4,7 @@ from django.http import response
 from django.http.request import HttpHeaders
 from django.http.response import HttpResponse
 from django.shortcuts import  render, redirect
+from matplotlib import image
 from .forms import NewUserForm
 from django.contrib.auth import login, authenticate,logout
 from django.contrib import messages
@@ -13,6 +14,15 @@ import json
 import difflib
 import requests
 from pymongo import MongoClient
+import base64
+from django.core.files.base import ContentFile
+from PIL import Image
+from io import BytesIO
+
+
+
+from django.core.files.base import ContentFile
+
 client = MongoClient('mongodb+srv://georgepovoa12:asdasd12@cluster0.y0ias.mongodb.net/cluster0?retryWrites=true&w=majority')
 db = client['CF88']
 col = db["Lei"]
@@ -388,14 +398,16 @@ def create_caderno(request):
             list_of_ids.remove("")
         bancas = []
         cargos = []
+        print(list_of_ids)
         list_of_ids = list(map(int, list_of_ids))
         ind_lei_str = '"indice_lei":{}'.format(list_of_ids)
         bancas_str = '"bancas":{}'.format(bancas)
         cargos_str = '"cargos":{}'.format(cargos)
+        print(request.POST["nome_caderno"])
         completo = "{" + ind_lei_str + ","+ bancas_str +","+cargos_str +"}"        
         requests.put(api_url+"/cadernos?user={}&id={}&nome_caderno={}".format(request.user,new_id,request.POST["nome_caderno"]),data = completo)
         
-        return redirect("create_caderno")
+        return redirect("profile-picker")
 
 
     user = request.user
@@ -425,4 +437,28 @@ def post_react_create_caderno(request):
         
         print(request.POST)
 
+
+def imagem_cortada(request):
+    ### RESIZE TA ZUADO PRECISA DE MELHORIA MAS TO BURRO HOJE
+    imagem_url = request.POST["imagem"]
+    format, imgstr = imagem_url.split(';base64,') 
+    width_crop = request.POST["width_crop"]
+    height_crop = request.POST["height_crop"]
+
+
+    
+    im = Image.open(BytesIO(base64.b64decode(imgstr))) 
+    out = im.resize((1100,450),Image.ANTIALIAS)
+
+    buffered = BytesIO()
+    out.save(buffered, format="JPEG")
+    img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    
+    print(width_crop)
+    print(height_crop)
+    print(im.format, im.size, im.mode)
+
+
+
+    return render(request,template_name="frontend/imagem_cortada.html",context={"imagem_url":img_str,"width_crop":width_crop,"height_crop":height_crop})
     
